@@ -20,14 +20,13 @@ public class EmpController {
 
     @GetMapping("/home")
     public String home(){
-
-        return "home";
+      return "home";
     }
 
     @GetMapping("/empForm")
     public String empForm(Model model){
         model.addAttribute("employee", new Employee());
-        return "addemployee";
+        return "addEmp";
     }
 
     @PostMapping("/save")
@@ -50,7 +49,7 @@ public class EmpController {
     public String edit(@PathVariable Long id, Model model) {
         Employee employee=employeeService.getById(id);
         model.addAttribute("employee", employee);
-        return "addemployee";
+        return "addEmp";
     }
 
     @GetMapping("/delete/{id}")
