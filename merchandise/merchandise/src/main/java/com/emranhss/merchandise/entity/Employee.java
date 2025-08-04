@@ -18,12 +18,12 @@ public class Employee {
     private  String address;
     private  String gender;
     private  String designation;
-    private  Number salary;
+    private  float salary;
 
     public Employee() {
     }
 
-    public Employee(Long id, String name, String email, String phone, String nid, String address, String gender, String designation, Number salary) {
+    public Employee(Long id, String name, String email, String phone, String nid, String address, String gender, String designation, float salary) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -35,11 +35,11 @@ public class Employee {
         this.salary = salary;
     }
 
-    public Number getSalary() {
+    public float getSalary() {
         return salary;
     }
 
-    public void setSalary(Number salary) {
+    public void setSalary(float salary) {
         this.salary = salary;
     }
 

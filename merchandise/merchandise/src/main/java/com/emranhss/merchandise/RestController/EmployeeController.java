@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/Employee")
+@RequestMapping("/api/employee/")
+@CrossOrigin("*")
 public class EmployeeController {
 
     private final EmployeeRepo employeeRepo;
@@ -17,13 +18,14 @@ public class EmployeeController {
         this.employeeRepo=employeeRepo;
     }
     //create
-    @PostMapping
+    @PostMapping("add")
     public Employee addEmp(@RequestBody Employee employee){
+
         return  employeeRepo.save(employee);
     }
 
     //read all
-    @GetMapping
+    @GetMapping("")
     public List<Employee>getAllEmp(){
         return employeeRepo.findAll();
     }
@@ -34,15 +36,30 @@ public class EmployeeController {
         return  employeeRepo.findById(id);
     }
 
-    //update
+
+    // Update
     @PutMapping("/{id}")
-    public  Employee updateEmp(@PathVariable Long id ,@RequestBody Employee employeeDetails){
-        Employee employee= employeeRepo.findById(id).orElseThrow();
-        return  employeeRepo.save(employee);
+    public Employee updateEmployee(@PathVariable Long id, @RequestBody Employee employeeDetails) {
+        return employeeRepo.findById(id)
+                .map(employee -> {
+                    employee.setName(employeeDetails.getName());
+                    employee.setEmail(employeeDetails.getEmail());
+                    employee.setPhone(employeeDetails.getPhone());
+                    employee.setNid(employeeDetails.getNid());
+                    employee.setAddress(employeeDetails.getAddress());
+                    employee.setGender(employeeDetails.getGender());
+                    employee.setDesignation(employeeDetails.getDesignation());
+                    employee.setSalary(employeeDetails.getSalary());
+
+                    Employee updatedEmployee = employeeRepo.save(employee);
+                    return employeeRepo.save(updatedEmployee);
+                })
+                .orElseThrow();
     }
 
+
     //delete
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     public  void  deleteEmp(@PathVariable Long id){
         employeeRepo.deleteById(id);
 
