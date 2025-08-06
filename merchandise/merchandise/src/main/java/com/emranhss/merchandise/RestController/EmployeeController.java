@@ -56,8 +56,6 @@ public class EmployeeController {
                 })
                 .orElseThrow();
     }
-
-
     //delete
     @DeleteMapping("{id}")
     public  void  deleteEmp(@PathVariable Long id){
