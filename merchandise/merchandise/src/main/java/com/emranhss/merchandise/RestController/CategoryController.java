@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/category")
-@CrossOrigin
+@RequestMapping("/api/category/")
+@CrossOrigin("*")
 public class CategoryController {
     private final CategoryRepo categoryRepo;
 
