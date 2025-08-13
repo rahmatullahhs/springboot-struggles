@@ -2,6 +2,7 @@ package com.emranhss.merchandise.RestController;
 
 import com.emranhss.merchandise.entity.Supplier;
 import com.emranhss.merchandise.repository.SupplierRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Optional;
 @CrossOrigin("*")
 public class SupplierController {
 
+    @Autowired
     private final SupplierRepo supplierRepo;
 
     public SupplierController(SupplierRepo supplierRepo) {

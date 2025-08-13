@@ -1,7 +1,12 @@
 package com.emranhss.merchandise.RestController;
 
 import com.emranhss.merchandise.entity.Goods;
+import com.emranhss.merchandise.repository.BrandRepo;
+import com.emranhss.merchandise.repository.CategoryRepo;
 import com.emranhss.merchandise.repository.GoodsRepo;
+import com.emranhss.merchandise.service.BrandService;
+import com.emranhss.merchandise.service.CategoryService;
+import com.emranhss.merchandise.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,14 +18,22 @@ import java.util.Optional;
 @CrossOrigin("*")
 public class GoodsController {
 
-    private final GoodsRepo goodsRepo;
+    @Autowired
+    private GoodsService goodsService;
+    @Autowired
+    private BrandService brandService;
+    @Autowired
+    private CategoryService categoryService;
 
     @Autowired
-    public GoodsController(GoodsRepo goodsRepo) {
-        this.goodsRepo = goodsRepo;
-    }
+    private GoodsRepo goodsRepo;
+    @Autowired
+    private BrandRepo brandRepo;
+    @Autowired
+    private CategoryRepo categoryRepo;
 
-    // Create
+
+    // save
     @PostMapping("add")
     public Goods addGoods(@RequestBody Goods goods) {
         return goodsRepo.save(goods);

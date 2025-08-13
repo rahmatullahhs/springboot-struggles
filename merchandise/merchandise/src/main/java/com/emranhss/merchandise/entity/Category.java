@@ -1,9 +1,9 @@
 package com.emranhss.merchandise.entity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+import java.util.List;
+
+@Table(name="category")
 @Entity
 public class Category {
 
@@ -11,14 +11,16 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long id;
     public String name;
-
+    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL)
+    private List<Brand>brand;
 
     public Category() {
     }
 
-    public Category(long id, String name) {
+    public Category(long id, String name, List<Brand> brand) {
         this.id = id;
         this.name = name;
+        this.brand = brand;
     }
 
     public long getId() {
@@ -35,5 +37,13 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Brand> getBrand() {
+        return brand;
+    }
+
+    public void setBrand(List<Brand> brand) {
+        this.brand = brand;
     }
 }

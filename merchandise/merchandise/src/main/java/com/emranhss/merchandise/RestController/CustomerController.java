@@ -2,6 +2,7 @@ package com.emranhss.merchandise.RestController;
 
 import com.emranhss.merchandise.entity.Customer;
 import com.emranhss.merchandise.repository.CustomerRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.Optional;
 @RequestMapping("/api/customer/")
 @CrossOrigin("*")
 public class CustomerController {
-
+    @Autowired
     private final CustomerRepo customerRepo;
 
     public CustomerController(CustomerRepo customerRepo) {
