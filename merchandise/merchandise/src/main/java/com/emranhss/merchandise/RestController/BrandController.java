@@ -1,6 +1,8 @@
 package com.emranhss.merchandise.RestController;
 import com.emranhss.merchandise.entity.Brand;
 import com.emranhss.merchandise.repository.BrandRepo;
+import com.emranhss.merchandise.service.BrandService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
@@ -9,6 +11,9 @@ import java.util.Optional;
 @RequestMapping("/api/brand/")
 @CrossOrigin("*")
 public class BrandController {
+    @Autowired
+    private BrandService brandService;
+
     private final BrandRepo brandRepo;
 
     public BrandController(BrandRepo brandRepo) {

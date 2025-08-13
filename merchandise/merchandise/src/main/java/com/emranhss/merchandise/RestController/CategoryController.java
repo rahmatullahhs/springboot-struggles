@@ -12,6 +12,8 @@ import java.util.Optional;
 @RequestMapping("/api/category/")
 @CrossOrigin("*")
 public class CategoryController {
+
+
     private final CategoryRepo categoryRepo;
 
     public CategoryController(CategoryRepo categoryRepo) {
@@ -21,7 +23,6 @@ public class CategoryController {
     //create
     @PostMapping("add")
     public Category addCatagory(@RequestBody Category category) {
-
         return categoryRepo.save(category);
     }
 
@@ -37,13 +38,13 @@ public class CategoryController {
         return categoryRepo.findById(id);
     }
 
+
     // Update
     @PutMapping("/{id}")
     public Category updateCategory(@PathVariable Long id, @RequestBody Category categoryDetails) {
         return categoryRepo.findById(id)
                 .map(category -> {
                     category.setName(categoryDetails.getName());
-
                     Category updatedCategory = categoryRepo.save(category);
                     return categoryRepo.save(updatedCategory);
                 })

@@ -1,7 +1,10 @@
 package com.emranhss.merchandise.service;
 
 import com.emranhss.merchandise.entity.Brand;
+import com.emranhss.merchandise.entity.Category;
 import com.emranhss.merchandise.repository.BrandRepo;
+import com.emranhss.merchandise.repository.CategoryRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,9 @@ public class BrandService {
     @Autowired
     private BrandRepo brandRepo;
 
+    @Autowired
+    private CategoryRepo categoryRepo;
+
     // ✅ Return all brands
     public List<Brand> getAllBrands() {
         return brandRepo.findAll();
@@ -25,17 +31,31 @@ public class BrandService {
     }
 
     // ✅ Create a new brand
-    public Brand createBrand(Brand brand) {
+    @Transactional
+    public Brand create(Brand brand) {
+        if (brand.getCategory() != null) {
+            long categoryId = brand.getCategory().getId();
+            Category category = categoryRepo.findById(categoryId)
+                    .orElseThrow(() -> new RuntimeException("Category not found with id " + categoryId));
+            brand.setCategory(category);
+        }
         return brandRepo.save(brand);
     }
 
     // ✅ Update an existing brand
-    public Optional<Brand> updateBrand(Long id, Brand updatedBrand) {
-        return brandRepo.findById(id).map(existingBrand -> {
-            existingBrand.setName(updatedBrand.getName());
-            existingBrand.setCategoryId(updatedBrand.getCategoryId());
-            return brandRepo.save(existingBrand);
-        });
+    public Brand update(long id, Brand updateBrand) {
+        Brand existing = brandRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Brand not found with id " + id));
+
+        existing.setName(updateBrand.getName()); // Fixed method call
+
+        if (updateBrand.getCategory() != null) {
+            Category category = categoryRepo.findById(updateBrand.getCategory().getId())
+                    .orElseThrow(() -> new RuntimeException("Category not found with id " + updateBrand.getCategory().getId()));
+            existing.setCategory(category);
+        }
+
+        return brandRepo.save(existing);
     }
 
     // ✅ Delete a brand
