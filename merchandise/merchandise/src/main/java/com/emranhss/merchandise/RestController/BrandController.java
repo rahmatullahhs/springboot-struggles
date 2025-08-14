@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/brand/")
+@RequestMapping("/api/brand")
 @CrossOrigin("*")
 public class BrandController {
     @Autowired

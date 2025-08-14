@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/supplier/")
+@RequestMapping("/api/supplier")
 @CrossOrigin("*")
 public class SupplierController {
 

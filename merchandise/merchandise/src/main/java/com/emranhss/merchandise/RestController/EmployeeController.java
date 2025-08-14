@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/employee/")
+@RequestMapping("/api/employee")
 @CrossOrigin("*")
 public class EmployeeController {
 
