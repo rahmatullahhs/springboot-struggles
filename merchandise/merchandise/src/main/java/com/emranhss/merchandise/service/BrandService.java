@@ -21,11 +21,11 @@ public class BrandService {
     private CategoryRepo categoryRepo;
 
     // ✅ Return all brands
-    public List<Brand> getAllBrands() {
+    public List<Brand> getAllBrand() {
         return brandRepo.findAll();
     }
 
-    // ✅ Get a brand by its ID
+    // ✅ Get a brand by ID
     public Optional<Brand> getBrandById(Long id) {
         return brandRepo.findById(id);
     }
@@ -34,28 +34,29 @@ public class BrandService {
     @Transactional
     public Brand create(Brand brand) {
         if (brand.getCategory() != null) {
-            long categoryId = brand.getCategory().getId();
+            Long categoryId = brand.getCategory().getId();
             Category category = categoryRepo.findById(categoryId)
-                    .orElseThrow(() -> new RuntimeException("Category not found with id " + categoryId));
+                    .orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
             brand.setCategory(category);
         }
         return brandRepo.save(brand);
     }
 
     // ✅ Update an existing brand
-    public Brand update(long id, Brand updateBrand) {
-        Brand existing = brandRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Brand not found with id " + id));
+    public Brand update(Long id, Brand updateBrand) {
+        Brand existingBrand = brandRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Brand not found with id: " + id));
 
-        existing.setName(updateBrand.getName()); // Fixed method call
+        existingBrand.setName(updateBrand.getName());
 
         if (updateBrand.getCategory() != null) {
-            Category category = categoryRepo.findById(updateBrand.getCategory().getId())
-                    .orElseThrow(() -> new RuntimeException("Category not found with id " + updateBrand.getCategory().getId()));
-            existing.setCategory(category);
+            Long categoryId = updateBrand.getCategory().getId();
+            Category category = categoryRepo.findById(categoryId)
+                    .orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
+            existingBrand.setCategory(category);
         }
 
-        return brandRepo.save(existing);
+        return brandRepo.save(existingBrand);
     }
 
     // ✅ Delete a brand

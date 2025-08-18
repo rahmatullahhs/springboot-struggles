@@ -9,7 +9,7 @@ public class Brand {
     private Long id;
     private String name;
 
-@ManyToOne(fetch = FetchType.LAZY)
+@ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
