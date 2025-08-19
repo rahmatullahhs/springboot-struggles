@@ -40,7 +40,7 @@ public class GoodsController {
     @PutMapping("/{id}")
     public Goods updateGoods(@PathVariable Long id, @RequestBody Goods updateGoods) {
         return goodsService.getById(id).map(existing -> {
-            existing.setGoodsName(updateGoods.getName());
+            existing.setName(updateGoods.getName());
             existing.setPrice(updateGoods.getPrice());
             existing.setQty(updateGoods.getQty());
             existing.setBrand(updateGoods.getBrand());

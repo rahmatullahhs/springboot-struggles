@@ -29,6 +29,21 @@ public class GoodsService {
     private SupplierRepo supplierRepo;
 
     public Goods save(Goods goods) {
+        // Fetch existing entities from DB using IDs
+        Brand brand = brandRepo.findById(goods.getBrand().getId())
+                .orElseThrow(() -> new RuntimeException("Brand not found"));
+
+        Category category = categoryRepo.findById(goods.getCategory().getId())
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
+        Supplier supplier = supplierRepo.findById(goods.getSupplier().getId())
+                .orElseThrow(() -> new RuntimeException("Supplier not found"));
+
+        // Set persistent references
+        goods.setBrand(brand);
+        goods.setCategory(category);
+        goods.setSupplier(supplier);
+
         return goodsRepo.save(goods);
     }
 

@@ -12,7 +12,7 @@ public class Goods {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Or GenerationType.IDENTITY if you're using numeric IDs
     private Long id;
-    private String goodsName;
+    private String name;
     private String details;
     private String invoice;
     private Date date;
@@ -36,9 +36,9 @@ public class Goods {
     public Goods() {
     }
 
-    public Goods(Long id, String goodsName, String details, String invoice, Date date, int qty, double price, double paid, double due, Brand brand, Category category, Supplier supplier) {
+    public Goods(Long id, String name, String details, String invoice, Date date, int qty, double price, double paid, double due, Brand brand, Category category, Supplier supplier) {
         this.id = id;
-        this.goodsName = goodsName;
+        this.name = name;
         this.details = details;
         this.invoice = invoice;
         this.date = date;
@@ -51,7 +51,6 @@ public class Goods {
         this.supplier = supplier;
     }
 
-
     public Long getId() {
         return id;
     }
@@ -60,12 +59,12 @@ public class Goods {
         this.id = id;
     }
 
-    public String getGoodsName() {
-        return goodsName;
+    public String getName() {
+        return name;
     }
 
-    public void setGoodsName(String goodsName) {
-        this.goodsName = goodsName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDetails() {
@@ -148,8 +147,6 @@ public class Goods {
         this.supplier = supplier;
     }
 
-    public String getName() {
-        return  goodsName;
-    }
+
 }
 
