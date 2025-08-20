@@ -1,9 +1,9 @@
 package com.emranhss.merchandise.entity;
 
-import jakarta.persistence.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 public class Employee {
@@ -42,11 +42,7 @@ public class Employee {
     public void setSalary(float salary) {
         this.salary = salary;
     }
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Expance> expances = new ArrayList<>();
 
-
-    
     public String getDesignation() {
         return designation;
     }
@@ -110,5 +106,4 @@ public class Employee {
     public void setId(Long id) {
         this.id = id;
     }
-
 }

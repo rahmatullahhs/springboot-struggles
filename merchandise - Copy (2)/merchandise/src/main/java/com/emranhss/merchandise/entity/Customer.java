@@ -1,37 +1,36 @@
 package com.emranhss.merchandise.entity;
-
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
-import java.util.List;
 
+
+@Table(name = "customer")
 @Entity
-@Table(name = "sales")
-public class CheckOut {
-
+public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    // sales id
-    private long id;
-
-    // customer name
+    private Long id;
     private String name;
     private String email;
     private String phone;
+    private String address;
 
-
-    private LocalDateTime createdAt;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
+    public Customer() {
     }
-// Getters and Setters
 
-    public long getId() {
+    public Customer(Long id, String name, String email, String phone, String address) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+    }
+
+
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -59,12 +58,11 @@ public class CheckOut {
         this.phone = phone;
     }
 
+    public String getAddress() {
+        return address;
+    }
 
-
-
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
