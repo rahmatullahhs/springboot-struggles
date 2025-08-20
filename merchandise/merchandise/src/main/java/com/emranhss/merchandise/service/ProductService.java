@@ -36,28 +36,5 @@ public class ProductService {
         productRepo.deleteById(id);
     }
 
-    // Check if product exists by ID
-    public boolean existsById(Long id) {
-        return productRepo.existsById(id);
-    }
-
-
-    public Product increaseStock(Long productId, int amount) {
-        Product product = productRepo.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
-        product.setStock(product.getStock() + amount);
-        return productRepo.save(product);
-    }
-
-    public Product decreaseStock(Long productId, int amount) {
-        Product product = productRepo.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
-        if (product.getStock() < amount) {
-            throw new RuntimeException("Not enough stock to decrease");
-        }
-        product.setStock(product.getStock() - amount);
-        return productRepo.save(product);
-    }
-
 
 }

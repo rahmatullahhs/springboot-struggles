@@ -1,55 +1,68 @@
 package com.emranhss.merchandise.RestController;
 
 import com.emranhss.merchandise.entity.Product;
+import com.emranhss.merchandise.entity.Supplier;
+import com.emranhss.merchandise.repository.ProductRepo;
+import com.emranhss.merchandise.repository.SupplierRepo;
 import com.emranhss.merchandise.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/products")
 @CrossOrigin("*")
 public class ProductController {
 
-    private final ProductService productService;
+  @Autowired
+  private final ProductRepo productRepo;
 
-    // Constructor injection (recommended)
-    public ProductController(ProductService productService) {
-        this.productService = productService;
+    public ProductController(ProductRepo productRepo) {
+        this.productRepo = productRepo;
     }
 
-    @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
-    }
-
-    @PostMapping
+    // Create
+    @PostMapping("add")
     public Product addProduct(@RequestBody Product product) {
-        return productService.saveProduct(product);
+        return productRepo.save(product);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable Long id) {
-        productService.deleteProduct(id);
+    // Read all
+    @GetMapping("")
+    public List<Product> getAllProducts() {
+        return productRepo.findAll();
     }
 
-    // Optional: get product by ID
+    // Read one by ID
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable Long id) {
-        return productService.getProductById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+    public Optional<Product> getProductById(@PathVariable Long id) {
+        return productRepo.findById(id);
     }
 
+    // Update
+    @PutMapping("/{id}")
+    public Product updateProduct(@PathVariable Long id, @RequestBody Product productDetails) {
+        return productRepo.findById(id)
+                .map(product -> {
+                    product.setName(productDetails.getName());
+                    product.setCategory(productDetails.getCategory());
+                    product.setBrand(productDetails.getBrand());
+                    product.setModel(productDetails.getModel());
+                    product.setDetails(productDetails.getDetails());
+                    product.setStock(productDetails.getStock());
+                    product.setPrice(productDetails.getPrice());
 
-    @PatchMapping("/{id}/increase-stock")
-    public Product increaseStock(@PathVariable Long id, @RequestParam int amount) {
-        return productService.increaseStock(id, amount);
+                    return productRepo.save(product);
+                })
+                .orElseThrow(() -> new RuntimeException("Product not found with id " + id));
     }
 
-    @PatchMapping("/{id}/decrease-stock")
-    public Product decreaseStock(@PathVariable Long id, @RequestParam int amount) {
-        return productService.decreaseStock(id, amount);
+    // Delete
+    @DeleteMapping("{id}")
+    public void deleteProduct(@PathVariable Long id) {
+        productRepo.deleteById(id);
     }
-
-
 }
+
