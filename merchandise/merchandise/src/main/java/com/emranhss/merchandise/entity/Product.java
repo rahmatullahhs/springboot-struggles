@@ -1,5 +1,6 @@
 package com.emranhss.merchandise.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 @Table(name = "products")
@@ -95,11 +96,13 @@ public class Product {
             this.price = price;
         }
 
-        // Enum for category
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    // Enum for category
         public enum Category {
             Laptop,
             Accessory,
-            Brand_PC
+
         }
     }
 
