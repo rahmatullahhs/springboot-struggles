@@ -11,28 +11,40 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private  String name;
-    private  String email;
-    private  String phone;
-    private  String nid;
-    private  String address;
-    private  String gender;
-    private  String designation;
-    private  float salary;
+    private String name;
+    private String email;
+    private String phone;
+    private String address;
+    private String gender;
+    private String designation;
+    private float salary;
+    private String photo;
+
+
 
     public Employee() {
     }
 
-    public Employee(Long id, String name, String email, String phone, String nid, String address, String gender, String designation, float salary) {
+    public Employee(String photo, Long id, String name, String email, String phone, String nid, String address, String gender, String designation, float salary) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.phone = phone;
-        this.nid = nid;
         this.address = address;
         this.gender = gender;
         this.designation = designation;
         this.salary = salary;
+        this.photo =photo;
+
+    }
+
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
     public float getSalary() {
@@ -42,11 +54,8 @@ public class Employee {
     public void setSalary(float salary) {
         this.salary = salary;
     }
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Expance> expances = new ArrayList<>();
 
 
-    
     public String getDesignation() {
         return designation;
     }
@@ -69,14 +78,6 @@ public class Employee {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getNid() {
-        return nid;
-    }
-
-    public void setNid(String nid) {
-        this.nid = nid;
     }
 
     public String getPhone() {
