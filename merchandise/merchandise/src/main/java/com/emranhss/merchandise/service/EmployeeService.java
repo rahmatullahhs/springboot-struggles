@@ -32,7 +32,7 @@ public class EmployeeService {
     public Employee createEmployee(Employee employee, MultipartFile file) {
         if (file != null && !file.isEmpty()) {
             String fileName = saveImage(file, employee);
-            employee.setPhoto("/images/employee/" + fileName);
+            employee.setPhoto( fileName);
         }
         return employeeRepo.save(employee);
     }
