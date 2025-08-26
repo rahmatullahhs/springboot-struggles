@@ -3,6 +3,8 @@ package com.emranhss.merchandise.RestController;
 import com.emranhss.merchandise.entity.Category;
 import com.emranhss.merchandise.entity.Employee;
 import com.emranhss.merchandise.repository.CategoryRepo;
+import com.emranhss.merchandise.service.CategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,45 +16,38 @@ import java.util.Optional;
 public class CategoryController {
 
 
-    private final CategoryRepo categoryRepo;
+        @Autowired
+        private CategoryService categoryService;
 
-    public CategoryController(CategoryRepo categoryRepo) {
-        this.categoryRepo = categoryRepo;
+        // Create
+        @PostMapping("/add")
+        public Category saveCategory(@RequestBody Category category) {
+            return categoryService.createCategory(category);
+        }
+
+
+
+    // Read one
+        @GetMapping("{id}")
+        public Category getCategoryById(@PathVariable long id) {
+            return categoryService.getCategoryById(id);
+        }
+
+        // Read all
+        @GetMapping("")
+        public List<Category> getAllCategories() {
+            return categoryService.getAllCategories();
+        }
+
+        // Update
+        @PutMapping("{id}")
+        public Category updateCategory(@PathVariable long id, @RequestBody Category category) {
+            return categoryService.updateCategory(id, category);
+        }
+
+        // Delete
+        @DeleteMapping("{id}")
+        public void deleteCategory(@PathVariable Long id) {
+            categoryService.deleteCategory(id);
+        }
     }
-
-    //create
-    @PostMapping("add")
-    public Category addCatagory(@RequestBody Category category) {
-        return categoryRepo.save(category);
-    }
-
-    //read all
-    @GetMapping("")
-    public List<Category> getAllCategory() {
-        return categoryRepo.findAll();
-    }
-
-    //read one
-    @GetMapping("/{id}")
-    public Optional<Category> getAllCategoryById(@PathVariable Long id) {
-        return categoryRepo.findById(id);
-    }
-
-
-    // Update
-    @PutMapping("/{id}")
-    public Category updateCategory(@PathVariable Long id, @RequestBody Category categoryDetails) {
-        return categoryRepo.findById(id)
-                .map(category -> {
-                    category.setName(categoryDetails.getName());
-                    Category updatedCategory = categoryRepo.save(category);
-                    return categoryRepo.save(updatedCategory);
-                })
-                .orElseThrow();
-    }
-    //delete
-    @DeleteMapping("{id}")
-    public  void  deleteCategory(@PathVariable Long id){
-        categoryRepo.deleteById(id);
-
-}}

@@ -13,31 +13,32 @@ public class CategoryService {
     @Autowired
     private CategoryRepo categoryRepo;
 
-    // সব ক্যাটাগরি রিটার্ন করে
+    // Get all categories
     public List<Category> getAllCategories() {
         return categoryRepo.findAll();
     }
 
-    // নির্দিষ্ট ID দিয়ে ক্যাটাগরি খোঁজে
+    // Get a category by ID
     public Category getCategoryById(Long id) {
-        return categoryRepo.findById(id).orElse(null);
+        return categoryRepo.findById(id).orElseThrow(() -> new RuntimeException("Category not found with ID: " + id));
     }
 
-    // নতুন ক্যাটাগরি তৈরি করে
+    // Create a new category
     public Category createCategory(Category category) {
-        return categoryRepo.save(category); // এখানে আগে ভুলভাবে capital `Category` ছিল
+        return categoryRepo.save(category);
     }
 
-    // ক্যাটাগরি আপডেট করে
+    // Update an existing category
     public Category updateCategory(Long id, Category updatedCategory) {
         return categoryRepo.findById(id).map(existingCategory -> {
-            existingCategory.setName(updatedCategory.getName()); // ধরলাম `name` আছে
-            // আরও ফিল্ড থাকলে সেগুলিও সেট করতে হবে
-            return categoryRepo.save(existingCategory); // এখানে ভুল ছিল - ভুলভাবে `CategoryRepo.save(...)` লেখা ছিল
-        }).orElse(null);
+            existingCategory.setName(updatedCategory.getName());
+            // You can also update brands if needed, but usually not from here.
+            return categoryRepo.save(existingCategory);
+        }).orElseThrow(() -> new RuntimeException("Category not found with ID: " + id));
     }
 
-    // ক্যাটাগরি ডিলিট করে
+
+    // Delete a category
     public void deleteCategory(Long id) {
         categoryRepo.deleteById(id);
     }

@@ -19,11 +19,39 @@ import java.util.Optional;
 public class GoodsController {
 
 
+    @Autowired
+    private GoodsService goodsService;
 
+    @PostMapping("/add")
+    public Goods createGoods(@RequestBody Goods goods) {
+        return goodsService.save(goods);
+    }
 
+    @GetMapping
+    public List<Goods> getAllGoods() {
+        return goodsService.getAll();
+    }
 
+    @GetMapping("/{id}")
+    public Goods getBuyGoodsById(@PathVariable Long id) {
+        return goodsService.getById(id).orElse(null);
+    }
 
+    @PutMapping("/{id}")
+    public Goods updateGoods(@PathVariable Long id, @RequestBody Goods updateGoods) {
+        return goodsService.getById(id).map(existing -> {
+            existing.setName(updateGoods.getName());
+            existing.setPrice(updateGoods.getPrice());
+            existing.setQty(updateGoods.getQty());
+            existing.setBrand(updateGoods.getBrand());
+            existing.setCategory(updateGoods.getCategory());
+            existing.setSupplier(updateGoods.getSupplier());
+            return goodsService.save(existing);
+        }).orElse(null);
+    }
 
-
-
+    @DeleteMapping("/{id}")
+    public void deleteGoods(@PathVariable Long id) {
+        goodsService.delete(id);
+    }
 }

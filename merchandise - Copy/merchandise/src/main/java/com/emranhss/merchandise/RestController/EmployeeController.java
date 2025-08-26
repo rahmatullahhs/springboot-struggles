@@ -1,66 +1,87 @@
 package com.emranhss.merchandise.RestController;
 
 import com.emranhss.merchandise.entity.Employee;
-import com.emranhss.merchandise.repository.EmployeeRepo;
+import com.emranhss.merchandise.service.EmployeeService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/employee")
 @CrossOrigin("*")
 public class EmployeeController {
 
-    private final EmployeeRepo employeeRepo;
 
-    public EmployeeController(EmployeeRepo employeeRepo){
-        this.employeeRepo=employeeRepo;
+
+    private final EmployeeService employeeService;
+
+    @Autowired
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
     }
-    //create
+
+    // Create employee with image
     @PostMapping("add")
-    public Employee addEmp(@RequestBody Employee employee){
+    public ResponseEntity<Map<String, String>> saveEmployee(
+            @RequestPart("employee") String employeeJson,
+            @RequestPart(value = "photo", required = false) MultipartFile photo
+    ) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            Employee employee = objectMapper.readValue(employeeJson, Employee.class);
 
-        return  employeeRepo.save(employee);
+            employeeService.createEmployee(employee, photo);
+
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Employee added successfully");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+
+        } catch (JsonProcessingException e) {
+            return new ResponseEntity<>(Map.of("message", "Invalid employee JSON: " + e.getMessage()), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(Map.of("message", "Failed to add employee: " + e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    //read all
+    // Get all employees
     @GetMapping("")
-    public List<Employee>getAllEmp(){
-        return employeeRepo.findAll();
+    public List<Employee> getAllEmployees() {
+        return employeeService.getAllEmployees();
     }
 
-    //read one
+    // Get employee by ID
     @GetMapping("/{id}")
-    public Optional<Employee>getAllEmpById(@PathVariable Long id){
-        return  employeeRepo.findById(id);
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
+        Employee employee = employeeService.getEmployeeById(id);
+        return employee != null
+                ? new ResponseEntity<>(employee, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-
-    // Update
+    // Update employee
     @PutMapping("/{id}")
-    public Employee updateEmployee(@PathVariable Long id, @RequestBody Employee employeeDetails) {
-        return employeeRepo.findById(id)
-                .map(employee -> {
-                    employee.setName(employeeDetails.getName());
-                    employee.setEmail(employeeDetails.getEmail());
-                    employee.setPhone(employeeDetails.getPhone());
-                    employee.setNid(employeeDetails.getNid());
-                    employee.setAddress(employeeDetails.getAddress());
-                    employee.setGender(employeeDetails.getGender());
-                    employee.setDesignation(employeeDetails.getDesignation());
-                    employee.setSalary(employeeDetails.getSalary());
-
-                    Employee updatedEmployee = employeeRepo.save(employee);
-                    return employeeRepo.save(updatedEmployee);
-                })
-                .orElseThrow();
-    }
-    //delete
-    @DeleteMapping("{id}")
-    public  void  deleteEmp(@PathVariable Long id){
-        employeeRepo.deleteById(id);
-
+    public ResponseEntity<Employee> updateEmployee(
+            @PathVariable Long id,
+            @RequestBody Employee employeeDetails) {
+        Employee updated = employeeService.updateEmployee(id, employeeDetails);
+        return updated != null
+                ? new ResponseEntity<>(updated, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    // Delete employee
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Map<String, String>> deleteEmployee(@PathVariable Long id) {
+        try {
+            employeeService.deleteEmployee(id);
+            return new ResponseEntity<>(Map.of("message", "Employee deleted successfully"), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(Map.of("message", "Failed to delete employee: " + e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
