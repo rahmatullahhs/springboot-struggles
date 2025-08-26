@@ -14,6 +14,6 @@ public class Invoice {
 
     @OneToMany(mappedBy = "", cascade = CascadeType.ALL)
     private List<Brand> brands;
-    
+
 
 }
