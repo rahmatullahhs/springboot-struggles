@@ -2,14 +2,18 @@ package com.emranhss.merchandise.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.Date;
 
-
-@Table(name = "cogs")
 @Entity
+@Table(name = "cogs")
 public class Cogs {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
+    private String productName;
 
     @Column(nullable = false)
     private String purchaseInvoice;
@@ -33,15 +37,16 @@ public class Cogs {
     private Double totalCogs;
 
     @Column(nullable = false)
-    private LocalDate date;
+    private Date date;
 
+    // Default constructor
+    public Cogs() {}
 
-    public Cogs() {
-    }
+    // All-args constructor
 
-
-    public Cogs(Long id, String purchaseInvoice, Double productPrice, Double transportFee, Double labourCost, Double packingCost, Double tax, Double totalCogs, LocalDate date) {
+    public Cogs(Long id, String productName, String purchaseInvoice, Double productPrice, Double transportFee, Double labourCost, Double packingCost, Double tax, Double totalCogs, Date date) {
         this.id = id;
+        this.productName = productName;
         this.purchaseInvoice = purchaseInvoice;
         this.productPrice = productPrice;
         this.transportFee = transportFee;
@@ -58,6 +63,14 @@ public class Cogs {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public String getPurchaseInvoice() {
@@ -116,11 +129,11 @@ public class Cogs {
         this.totalCogs = totalCogs;
     }
 
-    public LocalDate getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 }
