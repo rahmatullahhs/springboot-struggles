@@ -7,6 +7,7 @@ import com.emranhss.merchandise.repository.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -24,12 +25,21 @@ public class CogsService {
         return cogsRepo.findById(id).orElse(null);
     }
 
+//    public Cogs createCogs(Cogs cogs) {
+//        return cogsRepo.save(cogs);
+//    }
+
     public Cogs createCogs(Cogs cogs) {
+        if (cogs.getDate() == null) {
+            cogs.setDate(cogs.getDate());  // default to today if no date provided
+        }
         return cogsRepo.save(cogs);
     }
 
+
     public Cogs updateCogs(Long id, Cogs updatedCogs) {
         return cogsRepo.findById(id).map(cogs -> {
+            cogs.setProductName(updatedCogs.getProductName());
             cogs.setPurchaseInvoice(updatedCogs.getPurchaseInvoice());
             cogs.setProductPrice(updatedCogs.getProductPrice());
             cogs.setTransportFee(updatedCogs.getTransportFee());

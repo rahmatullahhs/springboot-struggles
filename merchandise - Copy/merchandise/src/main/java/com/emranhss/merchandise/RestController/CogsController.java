@@ -3,6 +3,7 @@ package com.emranhss.merchandise.RestController;
 import com.emranhss.merchandise.entity.Cogs;
 import com.emranhss.merchandise.service.CogsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,9 +21,18 @@ public class CogsController {
     }
 
     // Create
+//    @PostMapping("/add")
+//    public Cogs saveCogs(@RequestBody Cogs cogs) {
+//        return cogsService.createCogs(cogs);
+//    }
+
     @PostMapping("/add")
-    public Cogs saveCogs(@RequestBody Cogs cogs) {
-        return cogsService.createCogs(cogs);
+    public ResponseEntity<?> createCogs(@RequestBody Cogs cogs) {
+        if (cogs.getDate() == null) {
+            return ResponseEntity.badRequest().body("Date is required");
+        }
+        Cogs saved = cogsService.createCogs(cogs);
+        return ResponseEntity.ok(saved);
     }
 
     // Read one
