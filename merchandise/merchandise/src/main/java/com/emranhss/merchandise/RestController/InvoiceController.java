@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/invoices")
+@RequestMapping("/api/invoice")
 public class InvoiceController {
 
     private final InvoiceService invoiceService;
