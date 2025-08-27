@@ -6,6 +6,7 @@ import com.emranhss.merchandise.repository.ProductRepo;
 import com.emranhss.merchandise.repository.SupplierRepo;
 import com.emranhss.merchandise.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,9 +42,8 @@ public class ProductController {
         return productRepo.findById(id);
     }
 
-    // Update
     @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable Long id, @RequestBody Product productDetails) {
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product productDetails) {
         return productRepo.findById(id)
                 .map(product -> {
                     product.setName(productDetails.getName());
@@ -51,13 +51,15 @@ public class ProductController {
                     product.setBrand(productDetails.getBrand());
                     product.setModel(productDetails.getModel());
                     product.setDetails(productDetails.getDetails());
-                    product.setStock(productDetails.getStock());
+                    product.setQuantity(productDetails.getQuantity());
                     product.setPrice(productDetails.getPrice());
 
-                    return productRepo.save(product);
+                    Product updatedProduct = productRepo.save(product);
+                    return ResponseEntity.ok(updatedProduct);
                 })
-                .orElseThrow(() -> new RuntimeException("Product not found with id " + id));
+                .orElse(ResponseEntity.notFound().build());
     }
+
 
     // Delete
     @DeleteMapping("{id}")

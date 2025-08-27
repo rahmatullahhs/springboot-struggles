@@ -1,110 +1,117 @@
 package com.emranhss.merchandise.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
-@Table(name = "products")
 @Entity
+@Table(name = "products")
 public class Product {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
 
-        @Column(nullable = false)
-        private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-        @Enumerated(EnumType.STRING)
-        @Column(nullable = false)
-        private Category category;
+    // Relationship with Invoice
+    @ManyToOne
+    @JoinColumn(name = "invoice_id")
+    private Invoice invoice;
 
-        @Column(nullable = false)
-        private String brand;
+    @Column(nullable = false)
+    private String name;
 
-        private String model;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Category category;
 
-        private String details;
+    @Column(nullable = false)
+    private String brand;
 
-        @Column(nullable = false)
-        private int stock;
+    private String model;
+    private String details;
 
-        @Column(nullable = false)
-        private double price;
+    @Column(nullable = false)
+    private int quantity; // ✅ Changed from double to int (for item count)
 
-        // Getters and Setters
+    @Column(nullable = false)
+    private double price;
 
-        public Long getId() {
-            return id;
-        }
+    // --- Getters and Setters ---
 
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public Category getCategory() {
-            return category;
-        }
-
-        public void setCategory(Category category) {
-            this.category = category;
-        }
-
-        public String getBrand() {
-            return brand;
-        }
-
-        public void setBrand(String brand) {
-            this.brand = brand;
-        }
-
-        public String getModel() {
-            return model;
-        }
-
-        public void setModel(String model) {
-            this.model = model;
-        }
-
-        public String getDetails() {
-            return details;
-        }
-
-        public void setDetails(String details) {
-            this.details = details;
-        }
-
-        public int getStock() {
-            return stock;
-        }
-
-        public void setStock(int stock) {
-            this.stock = stock;
-        }
-
-        public double getPrice() {
-            return price;
-        }
-
-        public void setPrice(double price) {
-            this.price = price;
-        }
-
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    // Enum for category
-        public enum Category {
-            Laptop,
-            Accessory,
-
-        }
+    public Long getId() {
+        return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
+    public Invoice getInvoice() {
+        return invoice;
+    }
 
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+    public int getQuantity() { // ✅ Fixed
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public double getPrice() { // ✅ Only one version
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    // --- Enum ---
+
+    public enum Category {
+        Laptop,
+        Accessory
+    }
+}
