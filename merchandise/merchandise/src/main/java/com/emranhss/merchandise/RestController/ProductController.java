@@ -1,5 +1,6 @@
 package com.emranhss.merchandise.RestController;
 
+import com.emranhss.merchandise.dto.ProductResponseDTO;
 import com.emranhss.merchandise.entity.Product;
 import com.emranhss.merchandise.entity.Supplier;
 import com.emranhss.merchandise.repository.ProductRepo;
@@ -19,6 +20,8 @@ public class ProductController {
 
   @Autowired
   private final ProductRepo productRepo;
+    @Autowired
+    private ProductService productService;
 
     public ProductController(ProductRepo productRepo) {
         this.productRepo = productRepo;
@@ -31,10 +34,17 @@ public class ProductController {
     }
 
     // Read all
-    @GetMapping("")
+    @GetMapping("all")
     public List<Product> getAllProducts() {
         return productRepo.findAll();
     }
+
+    @GetMapping("")
+    public List<ProductResponseDTO> getAllProductsResponseDTOs() {
+        return productService.getAllProductResponseDTOS();
+
+    }
+
 
     // Read one by ID
     @GetMapping("/{id}")

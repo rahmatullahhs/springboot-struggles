@@ -1,5 +1,6 @@
 package com.emranhss.merchandise.service;
 
+import com.emranhss.merchandise.dto.ProductResponseDTO;
 import com.emranhss.merchandise.entity.Product;
 import com.emranhss.merchandise.repository.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,4 +39,20 @@ public class ProductService {
     }
 
 
+    public List<ProductResponseDTO> getAllProductResponseDTOS() {
+        return productRepo.findAll().stream().map(product -> {
+            ProductResponseDTO dto = new ProductResponseDTO();
+            dto.setId(product.getId());
+            dto.setName(product.getName());
+            dto.setPrice(product.getPrice());
+            dto.setCategory(product.getCategory());
+            dto.setDetails(product.getDetails());
+            dto.setQuantity(product.getQuantity());
+            dto.setBrand(product.getBrand());
+            dto.setModel(product.getModel());
+
+
+            return dto;
+        }).toList();
+    }
 }

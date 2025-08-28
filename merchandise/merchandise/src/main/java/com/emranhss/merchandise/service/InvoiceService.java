@@ -52,6 +52,7 @@ public class InvoiceService {
                 .toList();
 
         // Deduct quantities
+
         for (int i = 0; i < managedProducts.size(); i++) {
             Product managedProduct = managedProducts.get(i);
             Product invoiceProduct = invoice.getProducts().get(i);
