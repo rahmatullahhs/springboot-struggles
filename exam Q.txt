@@ -1,0 +1,149 @@
+1. Do you think Spring Boot upgrades all dependencies automatically? 
+A.O True
+B.False
+2. Which Maven command is used to run a Spring boot application? Omaven spring-boot:run
+Mvn spring: run
+mvn spring-boot:run
+None of the options
+3. Which of the following is not a spring boot layer?
+Presentation Layer
+Service layer
+Persistence Layer
+Business Layer
+4. What is the purpose of Spring Boot?
+OMVC Framework
+Java Framework
+Web Development Framework
+All of the Above
+5. How we can disable a specific auto- configuration class?
+Using include attribute of @DisableAutoconfiguration
+Using not exclude attribute of @DisabaleAutoConfiguration
+Using not include attribute of @EnableAutoConfiguration Using exclude attribute of @EnableAutoConfiguration
+
+Autoconguration Using not exclude attribute of DisabaleAutoConfiguration Using not include attribute of @EnableAutoConfiguration Using exclude attribute of @EnableAutoConfiguration
+6. How primary key is annotated with attribute?
+@Column
+@Id
+@PrimaryKeyNotNull
+@PrimaryKeyNotNullAutoIncrement
+7. What is the spring boot default embedded server?
+O Undertow Server
+Tomcat Server Glassfish Server
+Jetty Server
+8. Which of the following are Class level annotation?
+@Controller
+@Service @Repository
+All of the above
+9. The annotation to be added to automatically configure beans based on the classes added to the class path is ? @AutoConfiguration
+@EnableAutoConfiguration
+@EnableConfiguration
+O None of the options
+10. Which of the following annotation is used to bind application properties to the class fields?
+11. How could you secure MVC controller with Spring Security?
+With the @Secured annotation
+With the @RolesAllowed annotation
+In a XML security configuration file
+All of the above
+12. What is the starting point of Spring Boot Application?
+@Service
+@Controller
+@SpringBootApplication
+None of the Above
+13. How to disable the default web server in the Spring Boot application? Ospring.main.web-server-type=none
+spring.main.web-application-type-none spring.main.application-type=no
+O spring.web-application-type-no-server
+14. Spring-boot-starter-parent manage which of the following activities? O Configuration - Java Version and other properties
+O Dependency Management - Version of dependencies
+O Default Plugin Configuration
+All of the above
+15. How to handle exceptions in Spring Boot? O@Advice
+@ControllerAdvice
+Type here to search
+近
+E
+จ
+Hot days ahead
+16. What is the purpose of Rest Template ?
+O create applications that consume RESTful Web Services
+create applications that produced RESTful Web Services Both A & B
+None
+17. Which of the following annotation used for Restful Web Services?
+@Controller
+@SpringBootApplication
+@RestController
+All of the Above
+18. Springboot enables the developers to use?
+O Multiple Annotations
+O Single Annotation
+Both
+O None
+19. How to configure hibernate in spring boot?
+Oh2
+O spring-boot-starter-data-jpa
+Both a & b
+None of the above
+20. What is used for handling GET requests?
+@GetMapping
+@PutMapping O@PostMapping
+1. Do you think Spring Boot upgrades all dependencies automatically?
+True False
+2. Which Maven command is used to run a Spring boot application?
+maven spring-boot:run
+Mvn spring: run
+mvn spring-boot:run
+None of the options
+3. Which of the following is not a spring boot layer?
+O Presentation Layer
+Service layer Persistence Layer
+Business Layer
+4. What is the purpose of Spring Boot?
+OMVC Framework
+Java Framework
+Web Development Framework
+All of the Above
+5. How we can disable a specific auto- configuration class?
+Using include attribute of @DisableAutoconfiguration
+Using not exclude attribute of @DisabaleAutoConfiguration
+
+@PutMapping @PostMapping
+O None of the Above
+21. What is the starter for using log4j2 for logging?
+Spring-boot-starter-logger
+Spring-boot-starter-log Spring-boot-starter-log4j2
+None of the options
+22. Which of the following XML file is used by Maven?
+O Config.xml
+META-INF.xml
+Pom.xml
+None of the Above
+23. What is the default method of @RequestMapping?
+Pull
+Patch
+Post
+Get
+24. Which you needed to build a RESTful Web Services?
+O Spring-boot-starter-rest
+Spring-boot-starter-web.rest Spring-boot-starter-web
+O None
+25. Which of the following are embedded containers supported by Spring?
+@PutMapping @PostMapping
+O None of the Above
+21. What is the starter for using log4j2 for logging?
+Spring-boot-starter-logger
+Spring-boot-starter-log Spring-boot-starter-log4j2
+None of the options
+22. Which of the following XML file is used by Maven?
+O Config.xml
+META-INF.xml
+Pom.xml
+None of the Above
+23. What is the default method of @RequestMapping?
+Pull
+Patch
+Post
+Get
+24. Which you needed to build a RESTful Web Services?
+O Spring-boot-starter-rest
+Spring-boot-starter-web.rest Spring-boot-starter-web
+O None
+25. Which of the following are embedded containers supported by Spring?
