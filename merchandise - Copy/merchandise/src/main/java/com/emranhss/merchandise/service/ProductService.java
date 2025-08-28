@@ -3,10 +3,11 @@ package com.emranhss.merchandise.service;
 import com.emranhss.merchandise.entity.Product;
 import com.emranhss.merchandise.repository.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public class ProductService {
 
     private final ProductRepo productRepo;
