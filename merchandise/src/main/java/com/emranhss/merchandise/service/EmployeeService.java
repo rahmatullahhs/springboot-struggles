@@ -32,7 +32,7 @@ public class EmployeeService {
     public Employee createEmployee(Employee employee, MultipartFile file) {
         if (file != null && !file.isEmpty()) {
             String fileName = saveImage(file, employee);
-            employee.setPhoto( fileName);
+            employee.setPhoto(fileName);
         }
         return employeeRepo.save(employee);
     }
@@ -55,29 +55,37 @@ public class EmployeeService {
     }
 
     public String saveImage(MultipartFile file, Employee employee) {
+        // Ensure the upload directory is absolute and exists
         Path uploadPath = Paths.get(uploadDir, "employee");
-
         try {
+            // Create the directory if it doesn't exist
             Files.createDirectories(uploadPath);
         } catch (IOException e) {
-            throw new RuntimeException("Could not create upload directory!", e);
+            throw new RuntimeException("Could not create upload directory: " + uploadPath, e);
         }
 
+        // Extract the file extension
         String originalFilename = file.getOriginalFilename();
         String extension = "";
         if (originalFilename != null && originalFilename.contains(".")) {
-            extension = originalFilename.substring(originalFilename.lastIndexOf('.'));
+            extension = originalFilename.substring(originalFilename.lastIndexOf('.')).toLowerCase();
         }
 
-        String fileName = employee.getName().replaceAll("\\s+", "_") + "_" + UUID.randomUUID() + extension;
+        // Sanitize the employee name to avoid invalid characters in filenames
+        String safeEmployeeName = employee.getName().trim().replaceAll("[^a-zA-Z0-9_-]", "_");
+
+        // Create a unique file name with employee name and UUID
+        String fileName = safeEmployeeName + "_" + UUID.randomUUID() + extension;
 
         try {
+            // Save the file to the directory
             Path filePath = uploadPath.resolve(fileName);
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            throw new RuntimeException("Could not save image file!", e);
+            throw new RuntimeException("Could not save image file: " + fileName, e);
         }
 
+        // Return the filename (you can also return the full URL or relative path if needed)
         return fileName;
     }
 }
