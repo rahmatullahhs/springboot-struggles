@@ -12,7 +12,6 @@ public class Product {
 
     // Relationship with Invoice
     @ManyToOne
-    @JoinColumn(name = "invoice_id")
     private Invoice invoice;
 
     @Column(nullable = false)

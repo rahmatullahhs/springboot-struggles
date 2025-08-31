@@ -3,7 +3,7 @@ package com.emranhss.merchandise.RestController;
 import com.emranhss.merchandise.entity.Invoice;
 import com.emranhss.merchandise.entity.Product;
 import com.emranhss.merchandise.repository.InvoiceRepo;
-import com.emranhss.merchandise.repository.ProductRepo;
+
 import com.emranhss.merchandise.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +17,14 @@ import java.util.Optional;
 @RequestMapping("/api/invoice")
 public class InvoiceController {
 
-    private final InvoiceService invoiceService;
-    private final InvoiceRepo invoiceRepo;
 
     @Autowired
-    public InvoiceController(InvoiceService invoiceService, InvoiceRepo invoiceRepo) {
-        this.invoiceService = invoiceService;
-        this.invoiceRepo = invoiceRepo;
-    }
+    private InvoiceService invoiceService;
+    @Autowired
+    private  InvoiceRepo invoiceRepo;
+
+
+
 
     // ✅ Create Invoice
     @PostMapping("/add")
@@ -66,6 +66,7 @@ public class InvoiceController {
         invoice.setTaxRate(invoiceDetails.getTaxRate());
         invoice.setPaid(invoiceDetails.getPaid());
         invoice.setInvoiceNumber(invoiceDetails.getInvoiceNumber());
+        invoice.setCreatedBy(invoiceDetails.getCreatedBy());
 
         // Clear and replace products
         invoice.getProducts().clear();

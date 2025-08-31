@@ -30,7 +30,7 @@ public class ProductController {
     // Create
     @PostMapping("add")
     public Product addProduct(@RequestBody Product product) {
-        return productRepo.save(product);
+        return productService.saveProduct(product);
     }
 
     // Read all
