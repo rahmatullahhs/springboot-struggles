@@ -66,7 +66,7 @@ public class InvoiceController {
         invoice.setTaxRate(invoiceDetails.getTaxRate());
         invoice.setPaid(invoiceDetails.getPaid());
         invoice.setInvoiceNumber(invoiceDetails.getInvoiceNumber());
-        invoice.setCreatedBy(invoiceDetails.getCreatedBy());
+
 
         // Clear and replace products
         invoice.getProducts().clear();
