@@ -72,7 +72,7 @@ public class InvoiceController {
         invoice.getProducts().clear();
         if (invoiceDetails.getProducts() != null) {
             for (Product product : invoiceDetails.getProducts()) {
-                product.setInvoice(invoice);
+
                 invoice.getProducts().add(product);
             }
         }
