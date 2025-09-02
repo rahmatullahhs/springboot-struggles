@@ -31,7 +31,7 @@ public class Invoice {
     private String invoiceNumber;
 
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Product> products;
+    private List<Product> products ;
 
     public Invoice() {
     }

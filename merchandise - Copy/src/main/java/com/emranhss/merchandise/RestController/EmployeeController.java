@@ -29,7 +29,7 @@ public class EmployeeController {
     @PostMapping("add")
     public ResponseEntity<Map<String, String>> saveEmployee(
             @RequestPart("employee") String employeeJson,
-            @RequestPart(value = "photo", required = false) MultipartFile photo
+            @RequestParam(value = "photo") MultipartFile photo
     ) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
