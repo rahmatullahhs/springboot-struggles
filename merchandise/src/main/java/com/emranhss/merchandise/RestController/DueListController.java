@@ -14,37 +14,26 @@ import java.util.Optional;
 @CrossOrigin("*")
 public class DueListController {
 
-        @Autowired
-        private DueListService dueListService;
+//        @Autowired
+//        private DueListService dueListService;
 
-        // Create
-        @PostMapping("/add")
-        public DueList addDueList(@RequestBody DueList dueList) {
-            return dueListService.create(dueList);
-        }
+//        // Read all
+//        @GetMapping("")
+//        public List<DueList> getAllDueList() {
+//            return dueListService.getAllBrand();
+//        }
 
-        // Read all
-        @GetMapping("")
-        public List<DueList> getAllDueList() {
-            return dueListService.getAllBrand();
-        }
-
-        // Read one
-        @GetMapping("/{id}")
-        public Optional<DueList> getDueListById(@PathVariable Long id) {
-            return dueListService.getDueListById(id);
-        }
-
-        // Update
-        @PutMapping("/{id}")
-        public DueList updateDueList(@PathVariable Long id, @RequestBody DueList brand) {
-            return dueListService.update(id, brand);
-        }
-
-        // Delete
-        @DeleteMapping("/{id}")
-        public void deleteDueList(@PathVariable Long id) {
-            dueListService.deleteBrand(id);
-        }
+//        // Read one
+//        @GetMapping("/{id}")
+//        public Optional<DueList> getDueListById(@PathVariable Long id) {
+//            return dueListService.getDueListById(id);
+//        }
+//
+//
+//        // Delete
+//        @DeleteMapping("/{id}")
+//        public void deleteDueList(@PathVariable Long id) {
+//            dueListService.(id);
+//        }
 
     }
