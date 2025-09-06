@@ -19,22 +19,13 @@ import java.util.Optional;
 @RequestMapping("/api/invoice")
 public class InvoiceController {
 
-
     @Autowired
     private InvoiceService invoiceService;
     @Autowired
     private  InvoiceRepo invoiceRepo;
 
 
-
-
-//    // ✅ Create Invoice
-//    @PostMapping("/add")
-//    public Invoice addInvoice(@RequestBody Invoice invoice) {
-//        return invoiceService.save(invoice);
-//    }
-
-
+   // ✅ Create Invoice
     @PostMapping
     public ResponseEntity<InvoiceResponseDTO> createInvoice(@RequestBody Invoice invoice) {
         Invoice saved = invoiceService.save(invoice);
@@ -109,10 +100,23 @@ public class InvoiceController {
 
 
     // ✅ Get All Invoices
+//    @GetMapping
+//    public List<Invoice> getAllInvoices() {
+//        return invoiceService.getAll();
+//    }
+
     @GetMapping
-    public List<Invoice> getAllInvoices() {
-        return invoiceService.getAll();
+    public ResponseEntity<List<InvoiceResponseDTO>> getAllInvoices() {
+        List<Invoice> invoices = invoiceService.getAll();
+
+        List<InvoiceResponseDTO> invoiceDTOs = invoices.stream()
+                .map(InvoiceMapper::toDTO)
+                .toList();
+
+        return ResponseEntity.ok(invoiceDTOs);
     }
+
+
 
     // ✅ Get Invoice by ID
     @GetMapping("/{id}")
