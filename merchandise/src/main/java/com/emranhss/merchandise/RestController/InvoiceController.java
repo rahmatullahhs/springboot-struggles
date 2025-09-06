@@ -53,7 +53,7 @@ public class InvoiceController {
 
 
 //    response
-//
+
 //    {
 //        "id": 6,
 //            "date": "2025-09-03T15:59:15.0759763",
@@ -96,23 +96,13 @@ public class InvoiceController {
 
 
 
-
-
-
     // ✅ Get All Invoices
-//    @GetMapping
-//    public List<Invoice> getAllInvoices() {
-//        return invoiceService.getAll();
-//    }
-
     @GetMapping
     public ResponseEntity<List<InvoiceResponseDTO>> getAllInvoices() {
         List<Invoice> invoices = invoiceService.getAll();
-
         List<InvoiceResponseDTO> invoiceDTOs = invoices.stream()
                 .map(InvoiceMapper::toDTO)
                 .toList();
-
         return ResponseEntity.ok(invoiceDTOs);
     }
 
@@ -136,7 +126,6 @@ public class InvoiceController {
         }
 
         Invoice invoice = optionalInvoice.get();
-
         // Update fields
         invoice.setName(invoiceDetails.getName());
         invoice.setEmail(invoiceDetails.getEmail());
@@ -152,7 +141,6 @@ public class InvoiceController {
         invoice.getProducts().clear();
         if (invoiceDetails.getProducts() != null) {
             for (Product product : invoiceDetails.getProducts()) {
-
                 invoice.getProducts().add(product);
             }
         }
