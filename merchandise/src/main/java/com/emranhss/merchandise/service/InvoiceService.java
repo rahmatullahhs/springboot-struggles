@@ -69,6 +69,9 @@ public class InvoiceService {
             }
             stockProduct.setQuantity(newQuantity);
 
+
+            //productRepo.save(stockProduct);
+
             // Create snapshot product for invoice
             Product sold = new Product();
             sold.setName(stockProduct.getName());

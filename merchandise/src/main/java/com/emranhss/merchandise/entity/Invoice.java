@@ -30,7 +30,7 @@ public class Invoice {
 
     private String invoiceNumber;
 
-    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "invoice", orphanRemoval = true)
     private List<Product> products ;
 
     public Invoice() {
