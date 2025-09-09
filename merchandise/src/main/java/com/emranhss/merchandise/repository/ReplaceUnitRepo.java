@@ -1,8 +1,10 @@
 package com.emranhss.merchandise.repository;
-import com.emranhss.merchandise.entity.ReSellProduct;
+
+import com.emranhss.merchandise.entity.ReplaceUnit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ReSellproductRepo extends JpaRepository<ReSellProduct,Long> {
+public interface ReplaceUnitRepo extends JpaRepository<ReplaceUnit,Long> {
+
 }

@@ -1,11 +1,13 @@
 package com.emranhss.merchandise.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 import java.util.Date;
-
 @Entity
-public class ReSellProduct {
+public class ReplaceUnit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,15 +19,14 @@ public class ReSellProduct {
     private double price;
     private double paid;
 
-    public ReSellProduct() {
+    public ReplaceUnit() {
     }
 
 
-    public ReSellProduct(Long id, String name, String details, Date date, int qty, double price, double paid) {
+    public ReplaceUnit(Long id, String name, String details, Date date, int qty, double price, double paid) {
         this.id = id;
         this.name = name;
         this.details = details;
-
         this.date = date;
         this.qty = qty;
         this.price = price;
@@ -88,7 +89,6 @@ public class ReSellProduct {
     public void setPaid(double paid) {
         this.paid = paid;
     }
-
 
 
 
