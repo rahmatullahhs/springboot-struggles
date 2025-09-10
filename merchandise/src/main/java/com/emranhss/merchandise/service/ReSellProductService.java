@@ -30,10 +30,8 @@ public class ReSellProductService {
         return reSellproductRepo.findById(id).map(existing -> {
             existing.setName(updatedReSellProduct.getName());
             existing.setDetails(updatedReSellProduct.getDetails());
-            existing.setDate(updatedReSellProduct.getDate());
             existing.setQty(updatedReSellProduct.getQty());
             existing.setPrice(updatedReSellProduct.getPrice());
-            existing.setPaid(updatedReSellProduct.getPaid());
             return reSellproductRepo.save(existing);
         }).orElse(null);
     }

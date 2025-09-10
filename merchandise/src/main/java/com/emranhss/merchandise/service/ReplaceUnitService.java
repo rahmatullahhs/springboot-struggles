@@ -30,10 +30,8 @@ public class ReplaceUnitService {
         return replaceUnitRepo.findById(id).map(existing -> {
             existing.setName(updatedReplaceUnit.getName());
             existing.setDetails(updatedReplaceUnit.getDetails());
-            existing.setDate(updatedReplaceUnit.getDate());
             existing.setQty(updatedReplaceUnit.getQty());
             existing.setPrice(updatedReplaceUnit.getPrice());
-            existing.setPaid(updatedReplaceUnit.getPaid());
             return replaceUnitRepo.save(existing);
         }).orElse(null);
     }
