@@ -13,49 +13,59 @@ import java.util.List;
 @CrossOrigin("*")
 public class CogsController {
 
-    private final CogsService cogsService;
+        private final CogsService cogsService;
 
-    @Autowired
-    public CogsController(CogsService cogsService) {
-        this.cogsService = cogsService;
-    }
-
-    // Create
-//    @PostMapping("/add")
-//    public Cogs saveCogs(@RequestBody Cogs cogs) {
-//        return cogsService.createCogs(cogs);
-//    }
-
-    @PostMapping("/add")
-    public ResponseEntity<?> createCogs(@RequestBody Cogs cogs) {
-        if (cogs.getDate() == null) {
-            return ResponseEntity.badRequest().body("Date is required");
+        @Autowired
+        public CogsController(CogsService cogsService) {
+            this.cogsService = cogsService;
         }
-        Cogs saved = cogsService.createCogs(cogs);
-        return ResponseEntity.ok(saved);
-    }
 
-    // Read one
-    @GetMapping("/{id}")
-    public Cogs getCogsById(@PathVariable Long id) {
-        return cogsService.getCogsById(id);
-    }
+        // 🔸 Create new COGS record
+        @PostMapping("/add")
+        public ResponseEntity<?> createCogs(@RequestBody Cogs cogs) {
+            if (cogs.getProductName() == null || cogs.getProductQty() == null || cogs.getProductQty() <= 0) {
+                return ResponseEntity.badRequest().body("Product name and quantity must be provided and quantity > 0.");
+            }
 
-    // Read all
-    @GetMapping("")
-    public List<Cogs> getAllCogs() {
-        return cogsService.getAllCogs();
-    }
+            Cogs saved = cogsService.createCogs(cogs);
+            return ResponseEntity.ok(saved);
+        }
 
-    // Update
-    @PutMapping("/{id}")
-    public Cogs updateCogs(@PathVariable Long id, @RequestBody Cogs cogs) {
-        return cogsService.updateCogs(id, cogs);
-    }
+        // 🔸 Get one COGS by ID
+        @GetMapping("/{id}")
+        public ResponseEntity<?> getCogsById(@PathVariable Long id) {
+            Cogs cogs = cogsService.getCogsById(id);
+            if (cogs == null) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(cogs);
+        }
 
-    // Delete
-    @DeleteMapping("/{id}")
-    public void deleteCogs(@PathVariable Long id) {
-        cogsService.deleteCogs(id);
+        // 🔸 Get all COGS records
+        @GetMapping("")
+        public List<Cogs> getAllCogs() {
+            return cogsService.getAllCogs();
+        }
+
+        // 🔸 Update a COGS record
+        @PutMapping("/{id}")
+        public ResponseEntity<?> updateCogs(@PathVariable Long id, @RequestBody Cogs cogs) {
+            Cogs updated = cogsService.updateCogs(id, cogs);
+            if (updated == null) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(updated);
+        }
+
+        // 🔸 Delete a COGS record
+        @DeleteMapping("/{id}")
+        public ResponseEntity<?> deleteCogs(@PathVariable Long id) {
+            Cogs existing = cogsService.getCogsById(id);
+            if (existing == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            cogsService.deleteCogs(id);
+            return ResponseEntity.ok("Deleted successfully.");
+        }
     }
-}
