@@ -19,10 +19,12 @@ public class ReturnProduct {
     private String reason;
     private String productName;
     private String photo;
+    private Double price; // ✅ Ensure this exists
+    private String status; // ✅ Add this line
     public ReturnProduct() {
     }
 
-    public ReturnProduct(Long id, String invoice, String type, int quantity, Date date, String reason, String productName, String photo) {
+    public ReturnProduct(Long id, String invoice, String type, int quantity, Date date, String reason, String productName, String photo, Double price, String status) {
         this.id = id;
         this.invoice = invoice;
         this.type = type;
@@ -31,6 +33,8 @@ public class ReturnProduct {
         this.reason = reason;
         this.productName = productName;
         this.photo = photo;
+        this.price = price;
+        this.status = status;
     }
 
     public Long getId() {
@@ -95,5 +99,22 @@ public class ReturnProduct {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    // ✅ ADD THESE METHODS
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

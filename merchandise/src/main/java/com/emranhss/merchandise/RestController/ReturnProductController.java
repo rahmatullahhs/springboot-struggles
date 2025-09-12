@@ -97,4 +97,18 @@ public class ReturnProductController {
             return new ResponseEntity<>(Map.of("message", "Failed to delete: " + e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+
+
+
+    @PostMapping("/markFixed/{id}")
+    public ResponseEntity<?> markFixed(@PathVariable Long id) {
+        try {
+            ReturnProduct rp = returnProductService.markAsFixedAndResell(id);
+            return ResponseEntity.ok(rp);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error marking as fixed: " + e.getMessage());
+        }
+    }
 }

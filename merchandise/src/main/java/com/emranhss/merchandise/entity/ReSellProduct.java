@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
-public class ReSellProduct {
+public class  ReSellProduct {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

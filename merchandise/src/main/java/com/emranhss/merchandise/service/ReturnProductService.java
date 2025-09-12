@@ -1,5 +1,6 @@
 package com.emranhss.merchandise.service;
 
+import com.emranhss.merchandise.entity.ReSellProduct;
 import com.emranhss.merchandise.entity.ReturnProduct;
 import com.emranhss.merchandise.repository.ReturnProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,8 @@ public class ReturnProductService {
 
     @Autowired
     private ReturnProductRepo returnProductRepo;
-
+    @Autowired
+    private ReSellProductService resellStockService; // ✅ Add this
     @Value("${image.upload.dir}")
     private String uploadDir;
 
@@ -99,5 +101,23 @@ public class ReturnProductService {
         }
 
         return fileName;
+    }
+
+
+    public ReturnProduct markAsFixedAndResell(Long id) throws Exception {
+        ReturnProduct rp = returnProductRepo.findById(id).orElseThrow(() -> new Exception("ReturnProduct not found"));
+        rp.setStatus("FIXED");
+        returnProductRepo.save(rp);
+
+        // Now create ResellStock record
+        ReSellProduct rs = new ReSellProduct();
+        rs.setName(rp.getProductName());
+        rs.setQty(rp.getQuantity());// assuming ReturnProduct has a field "price" or cost to set price
+        rs.setPrice(rp.getPrice());
+        rs.setDetails("From return product id: " + rp.getId());
+
+        resellStockService.save(rs);
+
+        return rp;
     }
 }
