@@ -13,7 +13,7 @@ public class ResellproductController {
 
     @Autowired
     private ReSellProductService reSellProductService;
-   
+
     @PostMapping("/add")
     public ReSellProduct createReSellProduct(@RequestBody ReSellProduct reSellProduct) {
         return reSellProductService.save(reSellProduct);
