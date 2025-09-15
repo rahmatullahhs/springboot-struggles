@@ -13,50 +13,68 @@ import java.util.List;
 @Service
 public class CogsService {
 
+        @Autowired
+        private CogsRepo cogsRepo;
 
-    @Autowired
-    private CogsRepo cogsRepo;
-
-    public List<Cogs> getAllCogs() {
-        return cogsRepo.findAll();
-    }
-
-    public Cogs getCogsById(Long id) {
-        return cogsRepo.findById(id).orElse(null);
-    }
-
-//    public Cogs createCogs(Cogs cogs) {
-//        return cogsRepo.save(cogs);
-//    }
-
-    public Cogs createCogs(Cogs cogs) {
-        if (cogs.getDate() == null) {
-            cogs.setDate(cogs.getDate());  // default to today if no date provided
+        // Get all COGS records
+        public List<Cogs> getAllCogs() {
+            return cogsRepo.findAll();
         }
-        return cogsRepo.save(cogs);
-    }
 
+        // Get a single COGS record by ID
+        public Cogs getCogsById(Long id) {
+            return cogsRepo.findById(id).orElse(null);
+        }
 
-    public Cogs updateCogs(Long id, Cogs updatedCogs) {
-        return cogsRepo.findById(id).map(cogs -> {
-            cogs.setProductName(updatedCogs.getProductName());
-            cogs.setPurchaseInvoice(updatedCogs.getPurchaseInvoice());
-            cogs.setProductPrice(updatedCogs.getProductPrice());
-            cogs.setTransportFee(updatedCogs.getTransportFee());
-            cogs.setLabourCost(updatedCogs.getLabourCost());
-            cogs.setPackingCost(updatedCogs.getPackingCost());
-            cogs.setTax(updatedCogs.getTax());
-            cogs.setTotalCogs(updatedCogs.getTotalCogs());
-            cogs.setDate(updatedCogs.getDate());
+        // Create new COGS record with calculated fields
+        public Cogs createCogs(Cogs cogs) {
+            calculateCogsFields(cogs);
+
+            if (cogs.getDate() == null) {
+                cogs.setDate(new Date()); // default to current date
+            }
+
             return cogsRepo.save(cogs);
-        }).orElse(null);
+        }
+
+        // Update an existing COGS record
+        public Cogs updateCogs(Long id, Cogs updatedCogs) {
+            return cogsRepo.findById(id).map(existingCogs -> {
+                existingCogs.setProductName(updatedCogs.getProductName());
+                existingCogs.setPurchaseInvoice(updatedCogs.getPurchaseInvoice());
+                existingCogs.setProductQty(updatedCogs.getProductQty());
+                existingCogs.setProductCost(updatedCogs.getProductCost());
+                existingCogs.setTransportFee(updatedCogs.getTransportFee());
+                existingCogs.setLabourCost(updatedCogs.getLabourCost());
+                existingCogs.setPackingCost(updatedCogs.getPackingCost());
+                existingCogs.setTax(updatedCogs.getTax());
+                existingCogs.setDate(updatedCogs.getDate());
+
+                // Recalculate totals
+                calculateCogsFields(existingCogs);
+
+                return cogsRepo.save(existingCogs);
+            }).orElse(null);
+        }
+
+        // Delete a COGS record by ID
+        public void deleteCogs(Long id) {
+            cogsRepo.deleteById(id);
+        }
+
+        // --- Helper method to calculate totalCOGS and eachProductPrice ---
+        private void calculateCogsFields(Cogs cogs) {
+            double totalCogs = cogs.getProductCost()
+                    + cogs.getTransportFee()
+                    + cogs.getLabourCost()
+                    + cogs.getPackingCost()
+                    + cogs.getTax();
+
+            double eachProductPrice = (cogs.getProductQty() != null && cogs.getProductQty() > 0)
+                    ? totalCogs / cogs.getProductQty()
+                    : 0.0;
+
+            cogs.setTotalCogs(totalCogs);
+            cogs.setEachProductPrice(eachProductPrice);
+        }
     }
-
-    public void deleteCogs(Long id) {
-        cogsRepo.deleteById(id);
-    }
-}
-
-
-
-

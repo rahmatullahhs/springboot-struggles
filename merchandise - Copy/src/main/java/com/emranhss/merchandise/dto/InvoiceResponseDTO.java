@@ -12,48 +12,24 @@ import java.util.List;
 public class InvoiceResponseDTO {
 
     private Long id;
-    private Date date;
-    private String invoiceNumber;
-//customer details
+    private LocalDateTime date;
     private String name;
     private String email;
     private String phone;
     private String address;
-
-    //product details
-    private String productName;
-    private int quantity;
-
-
     private double subtotal;
     private double discount;
-    private double taxRate = 5.0;
+    private double taxRate;
     private double taxAmount;
     private double total;
-
     private double paid;
     private double due;
+    private String invoiceNumber;
+
+    private List<ProductResponseDTO> products;
+
 
     public InvoiceResponseDTO() {
-    }
-
-    public InvoiceResponseDTO(Long id, Date date, String invoiceNumber, String name, String email, String phone, String address, String productName, int quantity, double subtotal, double discount, double taxRate, double taxAmount, double total, double paid, double due) {
-        this.id = id;
-        this.date = date;
-        this.invoiceNumber = invoiceNumber;
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.address = address;
-        this.productName = productName;
-        this.quantity = quantity;
-        this.subtotal = subtotal;
-        this.discount = discount;
-        this.taxRate = taxRate;
-        this.taxAmount = taxAmount;
-        this.total = total;
-        this.paid = paid;
-        this.due = due;
     }
 
 
@@ -65,20 +41,12 @@ public class InvoiceResponseDTO {
         this.id = id;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
-    }
-
-    public String getInvoiceNumber() {
-        return invoiceNumber;
-    }
-
-    public void setInvoiceNumber(String invoiceNumber) {
-        this.invoiceNumber = invoiceNumber;
     }
 
     public String getName() {
@@ -111,22 +79,6 @@ public class InvoiceResponseDTO {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 
     public double getSubtotal() {
@@ -183,5 +135,21 @@ public class InvoiceResponseDTO {
 
     public void setDue(double due) {
         this.due = due;
+    }
+
+    public String getInvoiceNumber() {
+        return invoiceNumber;
+    }
+
+    public void setInvoiceNumber(String invoiceNumber) {
+        this.invoiceNumber = invoiceNumber;
+    }
+
+    public List<ProductResponseDTO> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<ProductResponseDTO> products) {
+        this.products = products;
     }
 }
