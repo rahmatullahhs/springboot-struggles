@@ -18,7 +18,6 @@ import java.util.Optional;
 @CrossOrigin("*")
 public class GoodsController {
 
-
     @Autowired
     private GoodsService goodsService;
 
