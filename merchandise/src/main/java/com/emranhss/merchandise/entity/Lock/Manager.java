@@ -1,4 +1,6 @@
 package com.emranhss.merchandise.entity.Lock;
 
-public class RoleSuperAdmin {
+public class Manager {
+
+
 }

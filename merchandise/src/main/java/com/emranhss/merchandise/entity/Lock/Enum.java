@@ -1,4 +1,4 @@
 package com.emranhss.merchandise.entity.Lock;
 
-public class RoleCashier {
+public enum Enum {
 }
