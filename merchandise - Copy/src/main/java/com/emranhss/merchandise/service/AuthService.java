@@ -1,10 +1,8 @@
 package com.emranhss.merchandise.service;
 
+import com.emranhss.merchandise.dto.AuthenticationResponse;
 import com.emranhss.merchandise.dto.UserResponseDTO;
-import com.emranhss.merchandise.entity.Role;
-import com.emranhss.merchandise.entity.RoleAdmin;
-import com.emranhss.merchandise.entity.Token;
-import com.emranhss.merchandise.entity.User;
+import com.emranhss.merchandise.entity.*;
 import com.emranhss.merchandise.jwt.JwtService;
 import com.emranhss.merchandise.repository.TokenRepo;
 import com.emranhss.merchandise.repository.UserRepo;
@@ -13,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,7 +29,6 @@ public class AuthService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     private UserRepo userRepo;
     @Autowired
@@ -41,6 +40,10 @@ public class AuthService {
 
     @Autowired
     private RoleAdminService roleAdminService;
+    @Autowired
+    private RoleCashierService roleCashierService;
+    @Autowired
+    private RoleManagerService roleManagerService;
 
     @Autowired
     @Lazy
@@ -63,17 +66,13 @@ public class AuthService {
 //        sendActivationEmail(user);
     }
 
-
     public List<User> findAllUsers() {
         return userRepo.findAll();
     }
 
-
-
     public List<UserResponseDTO> getAllUsersResponseDTOS() {
         return userRepo.findAll().stream().map(user -> {
             UserResponseDTO dto = new UserResponseDTO();
-
 
             dto.setId(user.getId());
             dto.setEmail(user.getEmail());
@@ -84,9 +83,6 @@ public class AuthService {
             return dto;
         }).toList();
     }
-
-
-
 
 
     public User findById(int id) {
@@ -234,6 +230,130 @@ public class AuthService {
     }
 
 
+    // start Manager
+    public String saveImageForManager(MultipartFile file, RoleManager roleManager) {
+
+        Path uploadPath = Paths.get(uploadDir + "/roleManager");
+        if (!Files.exists(uploadPath)) {
+            try {
+                Files.createDirectory(uploadPath);
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        String managerName = roleManager.getName();
+        String fileName = managerName.trim().replaceAll("\\s+", "_");
+
+        String savedFileName = fileName + "_" + UUID.randomUUID().toString();
+
+        try {
+            Path filePath = uploadPath.resolve(savedFileName);
+            Files.copy(file.getInputStream(), filePath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return savedFileName;
+
+    }
+
+    public void registerManager(User user, MultipartFile imageFile, RoleManager managerdata) throws IOException {
+        if (imageFile != null && !imageFile.isEmpty()) {
+            // Save image for both User and Manager
+            String filename = saveImage(imageFile, user);
+            String managerImage = saveImageForManager(imageFile, managerdata);
+            managerdata.setPhoto(managerImage);
+            user.setPhoto(filename);
+        }
+
+        // Encode password before saving User
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(Role.MANAGER);
+        user.setActive(false);
+
+        // Save User FIRST and get persisted instance
+        User savedUser = userRepo.save(user);
+
+        // Now, associate saved User with JobSeeker and save JobSeeker
+        managerdata.setUser(savedUser);
+        roleManagerService.save(managerdata);
+
+        // Now generate token and save Token associated with savedUser
+        String jwt = jwtService.generateToken(savedUser);
+        saveUserToken(jwt, savedUser);
+
+        // Send Activation Email
+//        sendActivationEmail(savedUser);
+    }
+
+    // end Manager
+
+
+
+
+    // start Cashier
+    public String saveImageForCashier(MultipartFile file, RoleCashier roleCashier) {
+
+        Path uploadPath = Paths.get(uploadDir + "/roleCashier");
+        if (!Files.exists(uploadPath)) {
+            try {
+                Files.createDirectory(uploadPath);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        String cashierName = roleCashier.getName();
+        String fileName = cashierName.trim().replaceAll("\\s+", "_");
+
+        String savedFileName = fileName + "_" + UUID.randomUUID().toString();
+
+        try {
+            Path filePath = uploadPath.resolve(savedFileName);
+            Files.copy(file.getInputStream(), filePath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return savedFileName;
+    }
+
+    public void registerCashier(User user, MultipartFile imageFile, RoleCashier cashierData) throws IOException {
+        if (imageFile != null && !imageFile.isEmpty()) {
+            // Save image for both User and Cashier
+            String filename = saveImage(imageFile, user);
+            String cashierImage = saveImageForCashier(imageFile, cashierData);
+            cashierData.setPhoto(cashierImage);
+            user.setPhoto(filename);
+        }
+
+        // Encode password before saving User
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(Role.CASHIER);  // Make sure Role enum contains `Cashier`
+        user.setActive(false);
+
+        // Save User FIRST and get persisted instance
+        User savedUser = userRepo.save(user);
+
+        // Associate saved User with RoleCashier and save RoleCashier
+        cashierData.setUser(savedUser);
+        roleCashierService.save(cashierData);
+
+        // Generate token and save Token associated with savedUser
+        String jwt = jwtService.generateToken(savedUser);
+        saveUserToken(jwt, savedUser);
+
+        // Optional: Send Activation Email
+        // sendActivationEmail(savedUser);
+    }
+// end Cashier
+
+
+
+
+
+
+
 
     private void saveUserToken(String jwt, User user) {
         Token token = new Token();
@@ -255,6 +375,57 @@ public class AuthService {
         });
 
         tokenRepo.saveAll(validTokens);
+
+    }
+
+
+    // It is Login Method
+    public AuthenticationResponse authenticate(User request) {
+        // Authenticate Username & Password
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getUsername(),
+                        request.getPassword()
+                )
+        );
+
+        // Fetch User from DB
+        User user = userRepo.findByEmail(request.getEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        // Check Activation Status
+        if (!user.isActive()) {
+            throw new RuntimeException("Account is not activated. Please check your email for activation link.");
+        }
+
+        // Generate JWT Token
+        String jwt = jwtService.generateToken(user);
+
+        // Remove Existing Tokens (Invalidate Old Sessions)
+        removeAllTokenByUser(user);
+
+        // Save New Token to DB (Optional if stateless)
+        saveUserToken(jwt, user);
+
+        // Return Authentication Response
+        return new AuthenticationResponse(jwt, "User Login Successful");
+    }
+
+
+    public  String activeUser(int id){
+
+        User user=userRepo.findById(id)
+                .orElseThrow(()-> new RuntimeException("User not Found with this ID "+id));
+
+        if(user !=null){
+            user.setActive(true);
+
+            userRepo.save(user);
+            return "User Activated Successfully!";
+
+        }else {
+            return  "Invalid Activation Token!";
+        }
 
     }
 
