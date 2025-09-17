@@ -42,7 +42,12 @@ public class SecurityConfig {
                                 "/api/auth/all",
                                 "/api/admin/reg",
                                 "/api/cashier/reg",
-                                "/images/**"
+                                "/images/**",
+                                "/api/returnproduct",
+                                "/api/returnproduct/**",
+                                "/api/resellproduct/**",
+                                "/api/reinvoices/**",
+                                "/api/invoice/**"
                         ).permitAll()
                         .requestMatchers("/api/invoice")
                         .hasRole("CASHIER")
