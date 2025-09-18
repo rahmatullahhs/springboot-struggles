@@ -43,10 +43,18 @@ public class SecurityConfig {
                                 "/api/auth/logout/**",
                                 "/api/auth/active",
                                 "/api/auth/active/**",
+                                "/api/admin",
+                                "/api/admin/**",
                                 "/api/auth/all",
                                 "/api/auth/all/**",
+                                "/api/admin",
+                                "/api/admin/**",
                                 "/api/admin/reg",
                                 "/api/admin/reg/**",
+                                "/api/cashier",
+                                "/api/cashier/**",
+                                "/api/category",
+                                "/api/category/**",
                                 "/api/cashier/reg",
                                 "/api/cashier/reg/**",
                                 "/api/cashier/profile",
@@ -63,6 +71,8 @@ public class SecurityConfig {
                                 "/api/resellproduct/**",
                                 "/api/reinvoices",
                                 "/api/reinvoices/**",
+                                "/api/replaceUnit",
+                                "/api/replaceUnit/**",
                                 "/api/invoice",
                                 "/api/invoice/**",
                                 "/api/expense",
@@ -77,6 +87,8 @@ public class SecurityConfig {
                                 "/api/duelist/**",
                                 "/api/employee",
                                 "/api/employee/**",
+                                "/api/brand",
+                                "/api/brand/**",
                                 "/api/goods",
                                 "/api/goods/**",
                                 "/api/manager",
@@ -86,9 +98,8 @@ public class SecurityConfig {
                                 "/api/replaceUnit",
                                 "/api/replaceUnit/**",
                                 "/api/supplier",
-                                "/api/supplier/**"
-
-
+                                "/api/supplier/**",
+                                "/api/resellproduct/add"
                         ).permitAll()
 
 
