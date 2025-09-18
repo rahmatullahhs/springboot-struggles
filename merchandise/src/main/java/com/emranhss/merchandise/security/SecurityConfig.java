@@ -36,21 +36,61 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(req -> req
-                        .requestMatchers("/api/auth/login",
+                        .requestMatchers(
+                                "/api/auth/login",
+                                "/api/auth/login/**",
                                 "/api/auth/logout",
+                                "/api/auth/logout/**",
+                                "/api/auth/active",
                                 "/api/auth/active/**",
                                 "/api/auth/all",
+                                "/api/auth/all/**",
                                 "/api/admin/reg",
+                                "/api/admin/reg/**",
                                 "/api/cashier/reg",
+                                "/api/cashier/reg/**",
+                                "/api/cashier/profile",
+                                "/api/cashier/profile/**",
+                                "/api/manager/reg",
+                                "/api/manager/reg/**",
+                                "/api/manager/profile",
+                                "/api/manager/profile/**",
+                                "/images",
                                 "/images/**",
                                 "/api/returnproduct",
                                 "/api/returnproduct/**",
+                                "/api/resellproduct",
                                 "/api/resellproduct/**",
+                                "/api/reinvoices",
                                 "/api/reinvoices/**",
-                                "/api/invoice/**"
+                                "/api/invoice",
+                                "/api/invoice/**",
+                                "/api/expense",
+                                "/api/expense/**",
+                                "/api/category",
+                                "/api/category/**",
+                                "/api/cogs",
+                                "/api/cogs/**",
+                                "/api/customer",
+                                "/api/customer/**",
+                                "/api/duelist",
+                                "/api/duelist/**",
+                                "/api/employee",
+                                "/api/employee/**",
+                                "/api/goods",
+                                "/api/goods/**",
+                                "/api/manager",
+                                "/api/manager/**",
+                                "/api/product",
+                                "/api/product/**",
+                                "/api/replaceUnit",
+                                "/api/replaceUnit/**",
+                                "/api/supplier",
+                                "/api/supplier/**"
+
+
                         ).permitAll()
-                        .requestMatchers("/api/invoice")
-                        .hasRole("CASHIER")
+
 
                 )
                 .userDetailsService(userService)
@@ -60,11 +100,6 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-
-
-
-
-
 
 
     @Bean
