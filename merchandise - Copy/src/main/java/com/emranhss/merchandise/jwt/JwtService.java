@@ -20,7 +20,6 @@ public class JwtService {
     @Autowired
     private TokenRepo tokenRepo;
 
-
     private final String SECURITY_KEY = "6SeHdW3EuWkwbT0PxoJJRt9YOH1uvppoz4C5uhmv0O3zF30YaD";
 
     // get all part from token

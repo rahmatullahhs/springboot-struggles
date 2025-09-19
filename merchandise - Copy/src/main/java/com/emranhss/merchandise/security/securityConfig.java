@@ -1,6 +1,6 @@
 package com.emranhss.merchandise.security;
 
-import com.emranhss.merchandise.jwt.JwtAuthenticationFilter;
+import com.emranhss.merchandise.jwt.JwtAuthFilter;
 import com.emranhss.merchandise.jwt.JwtService;
 import com.emranhss.merchandise.service.UserService;
 import org.springframework.context.annotation.Bean;
@@ -23,48 +23,99 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.List;
 @Configuration
 @EnableWebSecurity
-public class securityConfig {
+public class SecurityConfig {
 
 
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http,
-                                           JwtAuthenticationFilter jwtAuthenticationFilter,
+                                           JwtAuthFilter jwtAuthFilter,
                                            UserService userService) throws Exception {
 
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(req -> req
-                        .requestMatchers("/api/auth/login",
+                        .requestMatchers(
+                                "/api/auth/login",
+                                "/api/auth/login/**",
                                 "/api/auth/logout",
+                                "/api/auth/logout/**",
+                                "/api/auth/active",
                                 "/api/auth/active/**",
+                                "/api/admin",
+                                "/api/admin/**",
                                 "/api/auth/all",
+                                "/api/auth/all/**",
+                                "/api/admin",
+                                "/api/admin/**",
                                 "/api/admin/reg",
+                                "/api/admin/reg/**",
+                                "/api/cashier",
+                                "/api/cashier/**",
+                                "/api/category",
+                                "/api/category/**",
                                 "/api/cashier/reg",
-                                "/images/**"
+                                "/api/cashier/reg/**",
+                                "/api/cashier/profile",
+                                "/api/cashier/profile/**",
+                                "/api/manager/reg",
+                                "/api/manager/reg/**",
+                                "/api/manager/profile",
+                                "/api/manager/profile/**",
+                                "/images",
+                                "/images/**",
+                                "/api/returnproduct",
+                                "/api/returnproduct/**",
+                                "/api/resellproduct",
+                                "/api/resellproduct/**",
+                                "/api/reinvoices",
+                                "/api/reinvoices/**",
+                                "/api/replaceUnit",
+                                "/api/replaceUnit/**",
+                                "/api/invoice",
+                                "/api/invoice/**",
+                                "/api/expense",
+                                "/api/expense/**",
+                                "/api/category",
+                                "/api/category/**",
+                                "/api/cogs",
+                                "/api/cogs/**",
+                                "/api/customer",
+                                "/api/customer/**",
+                                "/api/duelist",
+                                "/api/duelist/**",
+                                "/api/employee",
+                                "/api/employee/**",
+                                "/api/brand",
+                                "/api/brand/**",
+                                "/api/goods",
+                                "/api/goods/**",
+                                "/api/manager",
+                                "/api/manager/**",
+                                "/api/product",
+                                "/api/product/**",
+                                "/api/replaceUnit",
+                                "/api/replaceUnit/**",
+                                "/api/supplier",
+                                "/api/supplier/**",
+                                "/api/resellproduct/add"
                         ).permitAll()
-                        .requestMatchers("/api/invoice")
-                        .hasRole("CASHIER")
+
 
                 )
                 .userDetailsService(userService)
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
 
-
-
-
-
-
     @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter(JwtService jwtService, UserService userService) {
-        return new JwtAuthenticationFilter(jwtService, userService);
+    public JwtAuthFilter jwtAuthFilter(JwtService jwtService, UserService userService) {
+        return new JwtAuthFilter(jwtService, userService);
     }
 
     @Bean

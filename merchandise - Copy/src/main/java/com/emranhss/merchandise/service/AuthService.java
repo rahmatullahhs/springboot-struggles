@@ -1,7 +1,7 @@
 package com.emranhss.merchandise.service;
 
-import com.emranhss.merchandise.dto.AuthenticationResponse;
-import com.emranhss.merchandise.dto.UserResponseDTO;
+import com.emranhss.merchandise.dto.AuthDTO;
+import com.emranhss.merchandise.dto.UserDTO;
 import com.emranhss.merchandise.entity.*;
 import com.emranhss.merchandise.jwt.JwtService;
 import com.emranhss.merchandise.repository.TokenRepo;
@@ -39,11 +39,11 @@ public class AuthService {
     private JwtService jwtService;
 
     @Autowired
-    private RoleAdminService roleAdminService;
+    private AdminService adminService;
     @Autowired
-    private RoleCashierService roleCashierService;
+    private CashierService cashierService;
     @Autowired
-    private RoleManagerService roleManagerService;
+    private ManagerService managerService;
 
     @Autowired
     @Lazy
@@ -70,9 +70,9 @@ public class AuthService {
         return userRepo.findAll();
     }
 
-    public List<UserResponseDTO> getAllUsersResponseDTOS() {
+    public List<UserDTO> getAllUsersDTOS() {
         return userRepo.findAll().stream().map(user -> {
-            UserResponseDTO dto = new UserResponseDTO();
+            UserDTO dto = new UserDTO();
 
             dto.setId(user.getId());
             dto.setEmail(user.getEmail());
@@ -141,9 +141,9 @@ public class AuthService {
 
     //  Admin Part start
 
-    public String saveImageForAdmin(MultipartFile file, RoleAdmin roleAdmin) {
+    public String saveImageForAdmin(MultipartFile file, Admin admin) {
 
-        Path uploadPath = Paths.get(uploadDir + "/roleAdmin");
+        Path uploadPath = Paths.get(uploadDir + "/admin");
         if (!Files.exists(uploadPath)) {
             try {
                 Files.createDirectory(uploadPath);
@@ -153,7 +153,7 @@ public class AuthService {
             }
         }
 
-        String adminName = roleAdmin.getName();
+        String adminName = admin.getName();
         String fileName = adminName.trim().replaceAll("\\s+", "_");
 
         String savedFileName = fileName + "_" + UUID.randomUUID().toString();
@@ -169,7 +169,7 @@ public class AuthService {
     }
 
 
-    public void registerAdmin(User user, MultipartFile imageFile, RoleAdmin adminData) throws IOException {
+    public void registerAdmin(User user, MultipartFile imageFile, Admin adminData) throws IOException {
         if (imageFile != null && !imageFile.isEmpty()) {
             // Save image for both User and Admin
             String fileName = saveImage(imageFile, user);
@@ -188,7 +188,7 @@ public class AuthService {
 
         // Now, associate saved User with Super Admin
         adminData.setUser(savedUser);
-        roleAdminService.save(adminData);
+        adminService.save(adminData);
 
         // Now generate token and save Token associated with savedUser
         String jwt = jwtService.generateToken(savedUser);
@@ -231,7 +231,7 @@ public class AuthService {
 
 
     // start Manager
-    public String saveImageForManager(MultipartFile file, RoleManager roleManager) {
+    public String saveImageForManager(MultipartFile file, Manager manager) {
 
         Path uploadPath = Paths.get(uploadDir + "/roleManager");
         if (!Files.exists(uploadPath)) {
@@ -243,7 +243,7 @@ public class AuthService {
             }
         }
 
-        String managerName = roleManager.getName();
+        String managerName = manager.getName();
         String fileName = managerName.trim().replaceAll("\\s+", "_");
 
         String savedFileName = fileName + "_" + UUID.randomUUID().toString();
@@ -258,7 +258,7 @@ public class AuthService {
 
     }
 
-    public void registerManager(User user, MultipartFile imageFile, RoleManager managerdata) throws IOException {
+    public void registerManager(User user, MultipartFile imageFile, Manager managerdata) throws IOException {
         if (imageFile != null && !imageFile.isEmpty()) {
             // Save image for both User and Manager
             String filename = saveImage(imageFile, user);
@@ -277,7 +277,7 @@ public class AuthService {
 
         // Now, associate saved User with JobSeeker and save JobSeeker
         managerdata.setUser(savedUser);
-        roleManagerService.save(managerdata);
+        managerService.save(managerdata);
 
         // Now generate token and save Token associated with savedUser
         String jwt = jwtService.generateToken(savedUser);
@@ -293,7 +293,7 @@ public class AuthService {
 
 
     // start Cashier
-    public String saveImageForCashier(MultipartFile file, RoleCashier roleCashier) {
+    public String saveImageForCashier(MultipartFile file, Cashier cashier) {
 
         Path uploadPath = Paths.get(uploadDir + "/roleCashier");
         if (!Files.exists(uploadPath)) {
@@ -304,7 +304,7 @@ public class AuthService {
             }
         }
 
-        String cashierName = roleCashier.getName();
+        String cashierName = cashier.getName();
         String fileName = cashierName.trim().replaceAll("\\s+", "_");
 
         String savedFileName = fileName + "_" + UUID.randomUUID().toString();
@@ -318,7 +318,7 @@ public class AuthService {
         return savedFileName;
     }
 
-    public void registerCashier(User user, MultipartFile imageFile, RoleCashier cashierData) throws IOException {
+    public void registerCashier(User user, MultipartFile imageFile, Cashier cashierData) throws IOException {
         if (imageFile != null && !imageFile.isEmpty()) {
             // Save image for both User and Cashier
             String filename = saveImage(imageFile, user);
@@ -337,7 +337,7 @@ public class AuthService {
 
         // Associate saved User with RoleCashier and save RoleCashier
         cashierData.setUser(savedUser);
-        roleCashierService.save(cashierData);
+        cashierService.save(cashierData);
 
         // Generate token and save Token associated with savedUser
         String jwt = jwtService.generateToken(savedUser);
@@ -380,7 +380,7 @@ public class AuthService {
 
 
     // It is Login Method
-    public AuthenticationResponse authenticate(User request) {
+    public AuthDTO authenticate(User request) {
         // Authenticate Username & Password
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -408,7 +408,7 @@ public class AuthService {
         saveUserToken(jwt, user);
 
         // Return Authentication Response
-        return new AuthenticationResponse(jwt, "User Login Successful");
+        return new AuthDTO(jwt, "User Login Successful");
     }
 
 
