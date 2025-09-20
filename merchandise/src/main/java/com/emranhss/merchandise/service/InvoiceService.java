@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,8 @@ public class InvoiceService {
 
     @Transactional
     public Invoice save(Invoice invoice) {
+
+
         List<Product> soldProducts = new ArrayList<>();
 
         for (Product invoiceProduct : invoice.getProducts()) {
@@ -102,5 +105,38 @@ public class InvoiceService {
     public void delete(Long id) {
         invoiceRepo.deleteById(id);
     }
+
+
+
+
+    // sales card
+
+    public Double getTodaySales() {
+        LocalDateTime start = LocalDate.now().atStartOfDay();
+        LocalDateTime end = LocalDateTime.now();
+        return invoiceRepo.getSalesBetween(start, end);
+    }
+
+    public Double getLast7DaysSales() {
+        LocalDateTime start = LocalDate.now().minusDays(7).atStartOfDay();
+        LocalDateTime end = LocalDateTime.now();
+        return invoiceRepo.getSalesBetween(start, end);
+    }
+
+    public Double getLast30DaysSales() {
+        LocalDateTime start = LocalDate.now().minusDays(30).atStartOfDay();
+        LocalDateTime end = LocalDateTime.now();
+        return invoiceRepo.getSalesBetween(start, end);
+    }
+
+//due card
+
+    public Double getLast30DaysDue() {
+        LocalDateTime start = LocalDate.now().minusDays(30).atStartOfDay();
+        LocalDateTime end = LocalDateTime.now();
+        return invoiceRepo.getDuesBetween(start, end);
+    }
+
+
 
 }

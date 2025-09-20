@@ -1,6 +1,6 @@
 package com.emranhss.merchandise.dto;
 
-public class UserDTO {
+public class     UserDTO {
         private int id;
         private String name;
         private String email;

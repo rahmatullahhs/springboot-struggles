@@ -99,7 +99,10 @@ public class SecurityConfig {
                                 "/api/replaceUnit/**",
                                 "/api/supplier",
                                 "/api/supplier/**",
-                                "/api/resellproduct/add"
+                                "/api/resellproduct/add",
+                                "/api/invoice/sellsummary",
+                                "/api/invoice/duesummary",
+                                "/api/invoice/expensesummary"
                         ).permitAll()
 
 

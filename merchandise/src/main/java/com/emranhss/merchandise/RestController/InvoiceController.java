@@ -1,7 +1,6 @@
 package com.emranhss.merchandise.RestController;
 
-import com.emranhss.merchandise.dto.InvoiceMapper;
-import com.emranhss.merchandise.dto.InvoiceResponseDTO;
+import com.emranhss.merchandise.dto.*;
 import com.emranhss.merchandise.entity.Invoice;
 import com.emranhss.merchandise.entity.Product;
 import com.emranhss.merchandise.repository.InvoiceRepo;
@@ -160,4 +159,28 @@ public class InvoiceController {
         invoiceRepo.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+
+
+
+
+    @GetMapping("/sellsummary")
+    public SalesSummaryDTO getSalesSummary() {
+        Double today = invoiceService.getTodaySales();
+        Double last7 = invoiceService.getLast7DaysSales();
+        Double last30 = invoiceService.getLast30DaysSales();
+
+        return new SalesSummaryDTO(today, last7, last30);
+    }
+
+    @GetMapping("/duesummary")
+    public DueSummaryDTO getDuesSummary() {
+
+        Double last30 = invoiceService.getLast30DaysDue();
+
+        return new DueSummaryDTO( last30);
+    }
+
+
+
 }
