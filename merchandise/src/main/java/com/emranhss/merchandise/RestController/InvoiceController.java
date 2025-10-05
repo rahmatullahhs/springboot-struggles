@@ -160,9 +160,7 @@ public class InvoiceController {
         return ResponseEntity.noContent().build();
     }
 
-
-
-
+    //dashboard sell
 
     @GetMapping("/sellsummary")
     public SalesSummaryDTO getSalesSummary() {
@@ -173,14 +171,8 @@ public class InvoiceController {
         return new SalesSummaryDTO(today, last7, last30);
     }
 
-    @GetMapping("/duesummary")
-    public DueSummaryDTO getDuesSummary() {
 
-        Double last30 = invoiceService.getLast30DaysDue();
-
-        return new DueSummaryDTO( last30);
-    }
-
+    // salesdashboard end
 
 
 }

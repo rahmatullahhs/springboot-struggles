@@ -5,6 +5,8 @@ import com.emranhss.merchandise.repository.DueListRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,4 +30,20 @@ public class DueListService {
     public void deleteDueList(Long id) {
         dueListRepo.deleteById(id);
     }
+
+
+
+    // DUEdashboard
+
+    public Double getLast30DaysDue() {
+        LocalDateTime start = LocalDate.now().minusDays(30).atStartOfDay();
+        LocalDateTime end = LocalDateTime.now();
+        return dueListRepo.getDuesBetween(start, end);
+    }
+
+    // DUEdashboard end
+
+
+
 }
+

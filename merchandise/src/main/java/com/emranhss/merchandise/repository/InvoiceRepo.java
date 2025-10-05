@@ -11,10 +11,16 @@ import java.time.LocalDateTime;
 
 @Repository
 public interface InvoiceRepo extends JpaRepository<Invoice,Long> {
+    // salesdashboard
+    @Query("SELECT COALESCE(SUM(i.total), 0) " +
+            "FROM Invoice i " +
+            "WHERE i.date BETWEEN :start AND :end")
+    Double getSalesBetween(@Param("start") LocalDateTime start,
+                           @Param("end") LocalDateTime end);
 
+    // salesdashboard end
 
-
-//    // Total sales for today
+    // Total sales for today
 //    @Query("SELECT COALESCE(SUM(i.total), 0) " +
 //            "FROM Invoice i " +
 //            "WHERE DATE(i.date) = CURRENT_DATE")
@@ -33,16 +39,6 @@ public interface InvoiceRepo extends JpaRepository<Invoice,Long> {
 //    Double getLast30DaysSales();
 
 
-    @Query("SELECT COALESCE(SUM(i.total), 0) " +
-            "FROM Invoice i " +
-            "WHERE i.date BETWEEN :start AND :end")
-    Double getSalesBetween(@Param("start") LocalDateTime start,
-                           @Param("end") LocalDateTime end);
 
-    @Query("SELECT COALESCE(SUM(i.total), 0) " +
-            "FROM Invoice i " +
-            "WHERE i.date BETWEEN :start AND :end")
-    Double getDuesBetween(@Param("start") LocalDateTime start,
-                           @Param("end") LocalDateTime end);
 
 }

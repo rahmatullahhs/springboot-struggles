@@ -1,5 +1,6 @@
 package com.emranhss.merchandise.RestController;
 
+import com.emranhss.merchandise.dto.DueSummaryDTO;
 import com.emranhss.merchandise.entity.DueList;
 import com.emranhss.merchandise.service.DueListService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,4 +34,15 @@ public class DueListController {
     public void deleteDueList(@PathVariable Long id) {
         dueListService.deleteDueList(id);
     }
+
+    // DUEdashboard
+    @GetMapping("/duesummary")
+    public DueSummaryDTO getDuesSummary() {
+
+        Double last30 = dueListService.getLast30DaysDue();
+
+        return new DueSummaryDTO( last30);
+    }
+    // DUEdashboard end
+
 }

@@ -109,7 +109,7 @@ public class InvoiceService {
 
 
 
-    // sales card
+    // salesdashboard
 
     public Double getTodaySales() {
         LocalDateTime start = LocalDate.now().atStartOfDay();
@@ -129,13 +129,7 @@ public class InvoiceService {
         return invoiceRepo.getSalesBetween(start, end);
     }
 
-//due card
-
-    public Double getLast30DaysDue() {
-        LocalDateTime start = LocalDate.now().minusDays(30).atStartOfDay();
-        LocalDateTime end = LocalDateTime.now();
-        return invoiceRepo.getDuesBetween(start, end);
-    }
+    // salesdashboard end
 
 
 
